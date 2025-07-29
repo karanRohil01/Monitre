@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>monitre - Register Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Universal Box Sizing for better responsiveness */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --monitre-blue-dark: #1A535C; /* Deep, trustworthy blue */
+            --monitre-blue-light: #2E86DE; /* Brighter, action blue */
+            --monitre-green: #52B788; /* Growth green */
+            --monitre-white: #FFFFFF;
+            --monitre-light-gray: #F8F8F8;
+            --monitre-text-gray: #333333;
+            --monitre-border-gray: #E0E0E0;
+            --monitre-red-error: #FF6B6B; /* For error messages */
+        }
+
+        /* Base font size for responsive scaling with rem units */
+        html {
+            font-size: 16px; /* Default for 1rem */
+            height: 100%; /* Ensures html takes full height */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            min-height: 100vh; /* Ensures body takes at least full viewport height */
+            background: linear-gradient(135deg, var(--monitre-blue-dark), var(--monitre-green)); /* Gradient background */
+            color: var(--monitre-text-gray);
+            overflow-y: auto; /* Allow vertical scrolling if content overflows */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            position: relative; /* For the fixed background blur */
+        }
+
+        /* Glass Effect Background Blur for the entire page */
+        body::before {
+            content: '';
+            position: fixed; /* Keep it fixed so it doesn't scroll with content */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px); /* Adjust blur intensity */
+            -webkit-backdrop-filter: blur(8px);
+            z-index: -1; /* Ensure it stays behind content */
+        }
+
+        /* Header container for logo and tagline */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1.5rem 2.5rem; /* Top/bottom 24px, left/right 40px */
+            color: var(--monitre-white);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 2; /* Ensure it's above the blur */
+            flex-wrap: wrap; /* Allow items to wrap on small screens */
+            gap: 1rem; /* Spacing between logo and tagline if they wrap */
+        }
+
+        .logo-section h1 {
+            margin: 0;
+            font-size: 2rem; /* 32px */
+            font-weight: 700;
+        }
+
+        .header-tagline { /* Renamed for clarity */
+            font-size: 1.15rem; /* ~18px */
+            font-weight: 500;
+        }
+
+        .main-content-container { /* Renamed from .main-container to avoid conflict and align with HTML */
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            /* No min-height here; let content define height */
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
+            border-radius: 1.25rem; /* 20px */
+            box-shadow: 0 0.625rem 2.5rem 0 rgba(0, 0, 0, 0.25); /* 0 10px 40px */
+            backdrop-filter: blur(10px); /* Stronger blur for the container itself */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden; /* Contains internal panels */
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease-in-out; /* Smooth transition for responsiveness */
+            margin: 1.5rem auto; /* Vertical margin to create spacing around the container */
+            flex-grow: 1; /* Allows container to take up available space */
+        }
+
+        .info-panel { /* Left Panel */
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03); /* Slightly darker transparent for contrast */
+            padding: 3.125rem; /* 50px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--monitre-white);
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .info-panel .content {
+            z-index: 2;
+        }
+
+        .info-panel h1 { /* monitre main title */
+            font-size: 3.5rem; /* Larger for impact */
+            margin-bottom: 0.9375rem; /* 15px */
+            font-weight: 700;
+            color: var(--monitre-white);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .info-panel .tagline {
+            font-size: 1.2rem; /* ~19px */
+            line-height: 1.7;
+            margin-bottom: 2.5rem; /* 40px */
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .why-join-section h3 {
+            font-size: 1.8rem; /* ~29px */
+            margin-bottom: 1.5rem; /* 24px */
+            color: var(--monitre-green);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem; /* 16px */
+            margin-bottom: 1.25rem; /* 20px */
+            text-align: left;
+        }
+
+        .feature-item i {
+            font-size: 1.8rem; /* 29px */
+            color: var(--monitre-green);
+            flex-shrink: 0; /* Prevent icon from shrinking */
+            margin-top: 0.25rem; /* Align icon better with text */
+        }
+
+        .feature-item h4 {
+            font-size: 1.15rem; /* ~18px */
+            margin: 0 0 0.25rem;
+            color: var(--monitre-white);
+        }
+
+        .feature-item p {
+            font-size: 0.95rem; /* ~15px */
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .social-proof {
+            font-size: 1rem; /* 16px */
+            margin-top: 2.5rem; /* 40px */
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        .social-proof strong {
+            color: var(--monitre-green);
+        }
+
+        .register-panel { /* Right Panel (Form) */
+            flex: 1;
+            background: var(--monitre-white);
+            padding: 3.75rem; /* 60px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-panel h2 {
+            font-size: 2.5rem; /* 40px */
+            margin-bottom: 0.9375rem; /* 15px */
+            color: var(--monitre-blue-dark);
+            font-weight: 700;
+        }
+
+        .register-panel .sub-tagline {
+            font-size: 1.15rem; /* ~18px */
+            color: #777;
+            margin-bottom: 2.5rem; /* 40px */
+        }
+
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 1.5rem; /* 24px */
+        }
+
+        .input-group-custom i {
+            position: absolute;
+            left: 1.25rem; /* 20px */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #BBB;
+            font-size: 1.1em;
+        }
+
+        .input-group-custom input {
+            width: 100%;
+            padding: 1.125rem 1.25rem 1.125rem 3.4375rem; /* 18px 20px 18px 55px */
+            border: 1px solid var(--monitre-border-gray);
+            border-radius: 0.75rem; /* 12px */
+            font-size: 1.05rem; /* ~17px */
+            color: var(--monitre-text-gray);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group-custom input:focus {
+            border-color: var(--monitre-blue-light);
+            box-shadow: 0 0 5px rgba(46, 134, 222, 0.3);
+            outline: none;
+        }
+
+   .input-eye-icon {
+    position: absolute;
+    right: 1.25rem; /* Change 'left' to 'right' */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+    z-index: 3;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+
+        .input-eye-icon:hover {
+            color: var(--monitre-blue-light);
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem; /* 24px */
+            font-size: 0.95rem; /* ~15px */
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            margin-top: 0.3rem; /* Align checkbox with text */
+            margin-right: 0.625rem; /* 10px */
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            accent-color: var(--monitre-blue-light);
+            flex-shrink: 0;
+        }
+
+        .terms-checkbox label a {
+            color: var(--monitre-blue-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .terms-checkbox label a:hover {
+            color: var(--monitre-blue-dark);
+            text-decoration: underline;
+        }
+
+        #message {
+            text-align: center;
+            padding: 0.75rem; /* 12px */
+            margin-bottom: 1.5rem; /* 24px */
+            border-radius: 0.5rem; /* 8px */
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+            display: none; /* Hide when not showing */
+        }
+
+        #message.show {
+            opacity: 1;
+            display: block; /* Show when message is present */
+        }
+
+        #message.error {
+            background-color: rgba(255, 107, 107, 0.1); /* Using RGB for error color */
+            color: var(--monitre-red-error);
+            border: 1px solid var(--monitre-red-error);
+        }
+
+        #message.success {
+            background-color: rgba(82, 183, 136, 0.1); /* Using RGB for green color */
+            color: var(--monitre-green);
+            border: 1px solid var(--monitre-green);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 1.125rem; /* 18px */
+            background-color: var(--monitre-blue-light);
+            color: var(--monitre-white);
+            border: none;
+            border-radius: 0.75rem; /* 12px */
+            font-size: 1.1rem; /* ~17.6px */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0.3125rem 0.75rem rgba(46, 134, 222, 0.35); /* 0 5px 12px */
+        }
+
+        .register-btn:hover {
+            background-color: var(--monitre-blue-dark);
+            transform: translateY(-0.1875rem); /* -3px */
+            box-shadow: 0 0.4375rem 1.125rem rgba(46, 134, 222, 0.45); /* 0 7px 18px */
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0.1875rem 0.5rem rgba(46, 134, 222, 0.3); /* 0 3px 8px */
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem; /* 24px */
+            color: #777;
+            font-size: 1rem; /* 16px */
+        }
+
+        .login-link a {
+            color: var(--monitre-blue-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: var(--monitre-blue-dark);
+            text-decoration: underline;
+        }
+
+        /* --- Responsive adjustments --- */
+        @media (max-width: 1024px) {
+            html {
+                font-size: 15px; /* Adjust base font size for smaller laptops/large tablets */
+            }
+            .page-header {
+                padding: 1rem 1.5rem; /* Reduced padding */
+            }
+            .main-content-container {
+                width: 95%;
+                margin: 1rem auto; /* Slightly smaller vertical margin */
+            }
+            .info-panel, .register-panel {
+                padding: 2.5rem; /* 40px */
+            }
+            .info-panel h1 {
+                font-size: 3rem; /* ~45px */
+            }
+            .info-panel .tagline {
+                font-size: 1rem; /* 15px */
+                margin-bottom: 1.875rem; /* 30px */
+            }
+            .why-join-section h3 {
+                font-size: 1.6rem; /* ~24px */
+            }
+            .feature-item i {
+                font-size: 1.5rem; /* ~22px */
+            }
+            .feature-item h4 {
+                font-size: 1rem; /* 15px */
+            }
+            .feature-item p {
+                font-size: 0.9rem; /* ~13.5px */
+            }
+            .social-proof {
+                margin-top: 1.875rem; /* 30px */
+            }
+            .register-panel h2 {
+                font-size: 2.2rem; /* ~33px */
+            }
+            .register-panel .sub-tagline {
+                margin-bottom: 2rem; /* 30px */
+            }
+            .input-group-custom {
+                margin-bottom: 1rem; /* 16px */
+            }
+            .register-btn {
+                padding: 1rem; /* 16px */
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px; /* Further adjust base font size for tablets/phones */
+            }
+            .page-header {
+                flex-direction: column; /* Stack logo and tagline */
+                padding: 1rem 1rem; /* Smaller padding */
+                text-align: center;
+                gap: 0.5rem; /* Smaller gap */
+            }
+            .logo-section h1 {
+                font-size: 1.8rem; /* ~25px */
+                margin-bottom: 0.5rem;
+            }
+            .header-tagline {
+                font-size: 1.1rem; /* ~15px */
+            }
+            .main-content-container {
+                flex-direction: column; /* Stack panels vertically */
+                margin: 1rem auto; /* 16px margin top/bottom */
+                border-radius: 1rem; /* 16px */
+                max-width: 95%; /* Narrower on smaller screens */
+            }
+            .info-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                padding: 1.5rem; /* 24px */
+            }
+            .register-panel {
+                padding: 1.5rem; /* 24px */
+            }
+            .info-panel h1 {
+                font-size: 2.5rem; /* ~35px */
+            }
+            .info-panel .tagline {
+                font-size: 0.9rem; /* ~13px */
+            }
+            .why-join-section h3 {
+                font-size: 1.4rem; /* ~19px */
+            }
+            .feature-item i {
+                font-size: 1.3rem; /* ~18px */
+            }
+            .feature-item h4 {
+                font-size: 0.95rem; /* ~13px */
+            }
+            .feature-item p {
+                font-size: 0.85rem; /* ~12px */
+            }
+            .register-panel h2 {
+                font-size: 1.8rem; /* ~25px */
+            }
+            .register-panel .sub-tagline {
+                font-size: 1rem; /* 14px */
+                margin-bottom: 1.25rem; /* 20px */
+            }
+            .input-group-custom input {
+                padding: 0.9rem 0.9rem 0.9rem 2.5rem; /* ~12px ~12px ~12px ~35px */
+                font-size: 0.95rem; /* ~13px */
+            }
+            .input-group-custom i {
+                left: 0.9rem; /* ~12px */
+            }
+            .input-eye-icon {
+                right: 0.9rem; /* ~12px */
+            }
+            .terms-checkbox {
+                font-size: 0.85rem; /* ~12px */
+                margin-bottom: 1.25rem; /* 20px */
+            }
+            .register-btn {
+                padding: 0.9rem; /* ~12px */
+                font-size: 1rem; /* 14px */
+            }
+            .login-link {
+                font-size: 0.9rem; /* ~12px */
+            }
+        }
+
+        @media (max-width: 480px) {
+            html {
+                font-size: 13px; /* Smaller base font for very small phones */
+            }
+            .page-header {
+                padding: 0.8rem 0.8rem; /* Even smaller padding */
+                gap: 0.3rem; /* Tighter gap */
+            }
+            .logo-section h1 {
+                font-size: 1.6rem; /* ~21px */
+            }
+            .header-tagline {
+                font-size: 0.95rem; /* ~12px */
+            }
+            .info-panel, .register-panel {
+                padding: 1rem; /* 16px */
+            }
+            .info-panel h1 {
+                font-size: 2rem; /* ~26px */
+            }
+            .info-panel .tagline {
+                font-size: 0.9rem; /* ~10px */
+            }
+            .why-join-section h3 {
+                font-size: 1.4rem; /* ~15px */
+            }
+            .feature-item i {
+                font-size: 1.2rem; /* ~14px */
+            }
+            .feature-item h4 {
+                font-size: 0.95rem; /* ~11px */
+            }
+            .feature-item p {
+                font-size: 0.85rem; /* ~9.75px */
+            }
+            .register-panel h2 {
+                font-size: 1.6rem; /* ~21px */
+            }
+            .register-panel .sub-tagline {
+                font-size: 0.9rem; /* ~12px */
+                margin-bottom: 1rem; /* 16px */
+            }
+            .input-group-custom input {
+                padding: 0.95rem 0.75rem 0.95rem 2.5rem; /* ~12px ~12px ~12px ~32px */
+                font-size: 0.90rem; /* ~11px */
+            }
+            .input-group-custom i {
+                left: 0.75rem; /* ~12px */
+            }
+            .input-eye-icon {
+                right: 0.75rem; /* ~12px */
+            }
+            .terms-checkbox {
+                font-size: 0.75rem; /* ~9.75px */
+            }
+            .register-btn {
+                padding: 0.75rem; /* ~12px */
+                font-size: 0.9rem; /* ~12px */
+            }
+            .login-link {
+                font-size: 0.8rem; /* ~10px */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div class="logo-section">
+            <h1>monitre</h1>
+        </div>
+        <div class="header-tagline">Unlock Your Financial Potential</div>
+    </header>
+
+    <div class="main-content-container">
+        <div class="info-panel">
+            <div class="content">
+                <p class="tagline">Join the thousands discovering new ways to invest and grow their wealth!</p>
+
+                <div class="why-join-section">
+                    <h3>Why Choose monitre?</h3>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <div>
+                            <h4>Curated Investment Opportunities</h4>
+                            <p>Access a diverse range of investment products and expert-vetted opportunities.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        <div>
+                            <h4>Realized Profit Payouts</h4>
+                            <p>Securely withdraw your returns directly to your preferred bank or payment method.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <h4>Secure & Transparent Platform</h4>
+                            <p>We prioritize your security and ensure full transparency in all financial operations.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="social-proof">Join our thriving community. **Trusted by thousands of investors worldwide!**</p>
+            </div>
+        </div>
+
+        <div class="register-panel">
+            <h2>Create Account</h2>
+            <p class="sub-tagline">Start your journey to financial independence</p>
+
+            <form onsubmit="event.preventDefault(); registerUser();">
+                <div class="input-group-custom">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" placeholder="Choose a username" required />
+                </div>
+
+                <div class="input-group-custom">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Enter your email" required />
+                </div>
+
+                <div class="input-group-custom">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="number" placeholder="Enter your phone number" required />
+                </div>
+
+               <div class="input-group-custom">
+    <i class="fa-solid fa-lock"></i>
+    <input type="password" id="password" placeholder="Create a password" required />
+    <!-- <i class="fa-solid fa-eye-slash input-eye-icon" onclick="togglePasswordVisibility('password')"></i> -->
+</div>
+
+                <div class="input-group-custom">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required />
+                    <!-- <i class="fa-solid fa-eye-slash input-eye-icon" onclick="togglePasswordVisibility('confirmPassword')"></i> -->
+                </div>
+
+                <div class="input-group-custom">
+                    <i class="fa-solid fa-user-tag"></i>
+                    <input type="text" id="refer" placeholder="Referral code (optional)" />
+                </div>
+
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" required />
+                    <label for="terms">
+                        I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div id="message"></div>
+                <button class="register-btn" type="submit">Register Now</button>
+
+                <div class="login-link">
+                    Already have an account? <a href="index.html">Log In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const numberInput = document.getElementById('number');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const termsCheckbox = document.getElementById('terms');
+        const messageDiv = document.getElementById('message');
+        const refer = document.getElementById('refer');
+
+        const API_BASE_URL = 'https://richmindsbackend.onrender.com';
+
+        function showMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = `text-center show ${type}`; // Add type class for styling
+            // Show message immediately
+            messageDiv.style.display = 'block';
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.classList.remove('show');
+                // Use a short timeout to allow fade-out transition before setting display to none
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 300);
+            }, 5000);
+        }
+
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const eyeIcon = passwordField.nextElementSibling; // Assumes icon is immediately next sibling
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        async function registerUser() {
+            messageDiv.textContent = ''; // Clear previous message
+            messageDiv.classList.remove('show', 'success', 'error'); // Reset classes
+            messageDiv.style.display = 'none'; // Ensure it's hidden initially
+
+            if (
+                usernameInput.value.trim() === '' ||
+                emailInput.value.trim() === '' ||
+                numberInput.value.trim() === '' ||
+                passwordInput.value.trim() === '' ||
+                confirmPasswordInput.value.trim() === ''
+            ) {
+                showMessage('Please fill in all required fields.', 'error');
+                return;
+            }
+
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            if (!termsCheckbox.checked) {
+                showMessage('You must agree to the Terms & Conditions and Privacy Policy.', 'error');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value.trim())) {
+                showMessage('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            const numberRegex = /^\d{10}$/;
+            if (!numberRegex.test(numberInput.value.trim())) {
+                showMessage('Please enter a valid 10-digit phone number.', 'error');
+                return;
+            }
+
+            const registrationData = {
+                username: usernameInput.value.trim(),
+                email: emailInput.value.trim(),
+                number: numberInput.value.trim(),
+                password: passwordInput.value,
+                refer: refer.value.trim() || null // Send null if referral code is empty or just whitespace
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registrationData),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage(result.message || 'Registration successful! Redirecting...', 'success');
+                    // Clear form fields on success
+                    usernameInput.value = '';
+                    emailInput.value = '';
+                    numberInput.value = '';
+                    passwordInput.value = '';
+                    confirmPasswordInput.value = '';
+                    refer.value = '';
+                    termsCheckbox.checked = false;
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; // Redirect to the login page (index.html)
+                    }, 2000);
+                } else {
+                    showMessage(result.message || 'Registration failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage('Could not connect to the server. Please check your internet connection.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

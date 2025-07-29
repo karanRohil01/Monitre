@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Funds | monitre</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Global Styles --- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px; /* Base for REM units */
+            height: 100%;
+        }
+
+        /* --- monitre Color Palette (CSS Variables) --- */
+        :root {
+            --monitre-blue-dark: #1a535c; /* Deep, trustworthy blue */
+            --monitre-blue-light: #2e86de; /* Brighter, action blue */
+            --monitre-green: #52b788; /* Growth green */
+            --monitre-white: #ffffff;
+            --monitre-text-gray: #333333; /* For text on light backgrounds (not used much here) */
+
+            /* Glassmorphism Variables */
+            --glass-bg-base: rgba(255, 255, 255, 0.08); /* Slightly transparent background */
+            --glass-border-base: rgba(255, 255, 255, 0.2); /* Thinner, less opaque border */
+            --glass-shadow-base: rgba(0, 0, 0, 0.25); /* General shadow for glass elements */
+
+            /* Semantic Color Mappings */
+            --page-bg-gradient-start: var(--monitre-blue-dark);
+            --page-bg-gradient-end: var(--monitre-green);
+            --page-text-color: var(--monitre-white);
+            --header-bg: rgba(var(--monitre-blue-dark), 0.8);
+            --accent-color-primary: var(--monitre-green); /* Main highlights, icons, active states */
+            --accent-color-secondary: var(--monitre-blue-light); /* Buttons, links */
+            --button-gradient-start: var(--monitre-blue-light);
+            --button-gradient-end: var(--monitre-blue-dark);
+            --whatsapp-green-dark: #1DA851;
+            --whatsapp-green-light: #25D366;
+            --error-color: #dc3545; /* Standard red for errors */
+            --success-color: #28a745; /* Standard green for success */
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Horizontally centers content in the body */
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--page-bg-gradient-start), var(--page-bg-gradient-end));
+            color: var(--page-text-color);
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Glass Effect Background Blur for the body */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        /* --- Main Wrapper for Content --- */
+        .main-wrapper {
+            width: 90%;
+            max-width: 600px; /* Slightly narrower than deposit for focus */
+            margin: 1.5rem auto;
+            padding: 2rem;
+            background: var(--glass-bg-base);
+            border-radius: 1.25rem;
+            box-shadow: 0 0.625rem 2.5rem 0 var(--glass-shadow-base);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border-base);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Space between sections */
+            flex-grow: 1;
+            text-align: center;
+            padding-bottom: 80px; /* Space for fixed footer */
+        }
+
+        /* --- Info Section --- */
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .trophy-icon {
+            font-size: 3.5rem;
+            color: var(--accent-color-primary);
+            text-shadow: 0 0 10px rgba(82, 183, 136, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--monitre-white);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section p {
+            font-size: 1rem;
+            color: rgba(var(--monitre-white), 0.9);
+            margin-bottom: 1.5rem;
+            max-width: 450px;
+            line-height: 1.5;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            margin-top: 1rem;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .stat-item {
+            background-color: rgba(var(--monitre-blue-light), 0.2);
+            border: 1px solid rgba(var(--monitre-blue-light), 0.5);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px; /* Ensure sufficient width */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-color-primary);
+            text-shadow: 0 0 5px rgba(82, 183, 136, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(var(--monitre-white), 0.7);
+            margin-top: 0.2rem;
+        }
+
+        /* --- Withdrawal Card Component --- */
+        .withdraw-card {
+            background: rgba(255, 255, 255, 0.05); /* Slightly more transparent glass for card */
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px var(--glass-shadow-base);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 2rem;
+            width: 100%;
+            text-align: center;
+            color: var(--page-text-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; /* Spacing between form elements */
+        }
+
+        .withdraw-card h3 {
+            color: var(--monitre-white);
+            margin-bottom: 1.5rem;
+            font-size: 1.7rem;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(82, 183, 136, 0.8), 0 0 15px rgba(82, 183, 136, 0.4); /* Green glow for heading */
+        }
+
+        .note {
+            font-size: 0.95rem;
+            color: rgba(var(--monitre-white), 0.8);
+            margin-bottom: 1rem;
+            background-color: rgba(var(--monitre-blue-light), 0.15);
+            border: 1px solid rgba(var(--monitre-blue-light), 0.4);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .note i {
+            color: var(--accent-color-primary);
+        }
+
+        /* --- Form Controls --- */
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--page-text-color);
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-appearance: none; /* Remove default styling for consistency */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .form-control::placeholder,
+        .form-select option {
+            color: rgba(var(--monitre-white), 0.6); /* More readable placeholder */
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--accent-color-primary);
+            box-shadow: 0 0 0 0.2rem rgba(82, 183, 136, 0.3);
+            background: rgba(255, 255, 255, 0.15); /* Slightly brighter on focus */
+        }
+        
+        /* Style for the select dropdown arrow */
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f8f9fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+
+        .bank-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; /* Consistent spacing within bank fields */
+        }
+
+        /* --- Messages --- */
+        .error-message {
+            color: var(--error-color);
+            background-color: rgba(var(--error-color), 0.1);
+            border: 1px solid rgba(var(--error-color), 0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+        }
+
+        .success-message {
+            color: var(--success-color);
+            background-color: rgba(var(--success-color), 0.1);
+            border: 1px solid rgba(var(--success-color), 0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
+
+
+        /* --- Buttons --- */
+        .submit-btn {
+            background: linear-gradient(45deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: var(--monitre-white);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0.9;
+        }
+
+        .submit-btn:disabled {
+            background: linear-gradient(45deg, rgba(var(--monitre-blue-light), 0.5), rgba(var(--monitre-blue-dark), 0.5));
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+        }
+
+        .history-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--monitre-white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .history-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: var(--monitre-white);
+        }
+
+        /* --- Footer Navigation --- */
+        .main-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--header-bg);
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 15px var(--glass-shadow-base);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .main-footer button {
+            background: transparent;
+            border: none;
+            color: var(--monitre-white);
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .main-footer button i {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .main-footer button:hover {
+            color: var(--accent-color-primary);
+        }
+
+        .main-footer button:hover i {
+            color: var(--accent-color-primary);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 1024px) {
+            html {
+                font-size: 15px;
+            }
+            .main-wrapper {
+                width: 95%;
+                margin: 1rem auto;
+                padding: 1.5rem;
+            }
+            .info-section h2 {
+                font-size: 1.8rem;
+            }
+            .trophy-icon {
+                font-size: 3rem;
+            }
+            .withdraw-card {
+                padding: 1.5rem;
+            }
+            .withdraw-card h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+            .main-wrapper {
+                padding: 1.2rem;
+            }
+            .info-section p {
+                font-size: 0.95rem;
+            }
+            .stats-grid {
+                flex-direction: column; /* Stack stats on smaller screens */
+                gap: 0.8rem;
+            }
+            .stat-item {
+                width: 90%; /* Take up more width when stacked */
+                margin: 0 auto;
+            }
+            .main-footer button i {
+                font-size: 1.3em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            html {
+                font-size: 13px;
+            }
+            .main-wrapper {
+                padding: 1rem;
+            }
+            .info-section h2 {
+                font-size: 1.6rem;
+            }
+            .trophy-icon {
+                font-size: 2.5rem;
+            }
+            .withdraw-card {
+                padding: 1rem;
+            }
+            .main-footer button i {
+                font-size: 1.1em;
+            }
+            .submit-btn, .history-link {
+                font-size: 1rem;
+                padding: 0.7rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Check for login data in session storage immediately
+        const userdata = sessionStorage.getItem("user");
+        if (!userdata) {
+            // If no user data, redirect to home.html
+            alert("Please log in first to access the withdrawal page.");
+            window.location.href = "home.html";
+        }
+    </script>
+
+    <div class="main-wrapper">
+        <div class="info-section">
+            <div class="trophy-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <h2>Withdraw Funds</h2>
+            <p>
+                Seamlessly transfer your winnings to your preferred account. Fast, secure, and reliable.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value" id="currentBalance">₹0</span> <span class="stat-label">Current Balance</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="withdraw-card">
+            <h3>Withdrawal Request</h3>
+            <div class="note">
+                <i class="fas fa-info-circle"></i> Minimum withdrawal amount: ₹1500
+            </div>
+
+            <input
+                min="900"
+                type="number"
+                id="amount"
+                class="form-control"
+                placeholder="Enter Amount (₹)"
+                aria-label="Withdrawal Amount"
+            />
+
+            <select id="method" class="form-select" onchange="toggleFields()" aria-label="Withdrawal Method">
+                <option value="upi">Withdraw to UPI</option>
+                <option value="bank">Withdraw to Bank</option>
+            </select>
+
+            <input
+                type="text"
+                id="upiField"
+                class="form-control"
+                placeholder="Enter UPI ID"
+                aria-label="UPI ID"
+            />
+
+            <div class="bank-fields" id="bankFields">
+                <input
+                    type="text"
+                    id="accHolder"
+                    class="form-control"
+                    placeholder="Account Holder Name"
+                    aria-label="Account Holder Name"
+                />
+                <input
+                    type="text"
+                    id="bankName"
+                    class="form-control"
+                    placeholder="Bank Name"
+                    aria-label="Bank Name"
+                />
+                <input
+                    type="text"
+                    id="accountNo"
+                    class="form-control"
+                    placeholder="Account Number"
+                    aria-label="Account Number"
+                />
+                <input
+                    type="text"
+                    id="ifsc"
+                    class="form-control"
+                    placeholder="IFSC Code"
+                    aria-label="IFSC Code"
+                />
+            </div>
+
+            <div id="message" class="error-message" role="alert" aria-live="polite"></div>
+            <button class="submit-btn" id="submitBtn" onclick="submitWithdrawal()">
+                <i class="fas fa-paper-plane"></i> Submit Request
+            </button>
+
+            <a href="withdrawlhistory.html" class="history-link">
+                View Withdrawal History <i class="fas fa-history"></i>
+            </a>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <button onclick="window.location.href='index.html'" aria-label="Home">
+            <i class="fa-solid fa-house"></i>
+        </button>
+        <button onclick="window.location.href='profile.html'" aria-label="Profile">
+            <i class="fa-solid fa-user"></i>
+        </button>
+    </footer>
+
+    <script>
+        const backendUrl = "https://richmindsbackend.onrender.com"; // Your backend URL
+
+        // Function to update the balance displayed on the page
+        function updateBalanceDisplay() {
+            const currentBalanceSpan = document.getElementById("currentBalance");
+            const userdata = JSON.parse(sessionStorage.getItem("user"));
+
+            if (userdata && typeof userdata.balance === 'number') {
+                currentBalanceSpan.textContent = `₹${userdata.balance.toLocaleString('en-IN')}`; // Format as Indian Rupees
+            } else {
+                currentBalanceSpan.textContent = `₹0`; // Default if no balance or user data
+            }
+        }
+
+        function toggleFields() {
+            const method = document.getElementById("method").value;
+            const upiField = document.getElementById("upiField");
+            const bankFields = document.getElementById("bankFields");
+            
+            // Reset input values when toggling, to prevent sending stale data
+            upiField.value = "";
+            document.getElementById("accHolder").value = "";
+            document.getElementById("bankName").value = "";
+            document.getElementById("accountNo").value = "";
+            document.getElementById("ifsc").value = "";
+            document.getElementById("message").textContent = ""; // Clear messages on toggle
+
+            if (method === "upi") {
+                upiField.style.display = "block";
+                bankFields.style.display = "none";
+            } else { // Bank withdrawal
+                upiField.style.display = "none";
+                bankFields.style.display = "block";
+            }
+        }
+
+        async function submitWithdrawal() {
+            const amountInput = document.getElementById("amount");
+            const amount = parseInt(amountInput.value);
+            const method = document.getElementById("method").value;
+            const messageDiv = document.getElementById("message");
+            const submitBtn = document.getElementById("submitBtn");
+
+            messageDiv.textContent = "";
+            messageDiv.classList.remove("error-message", "success-message");
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            const userinfo = JSON.parse(sessionStorage.getItem("user"));
+            if (!userinfo || !userinfo._id) {
+                messageDiv.innerHTML = '<i class="fas fa-times-circle"></i> User session invalid. Please log in again.';
+                messageDiv.classList.add("error-message");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+                return;
+            }
+            const userID = userinfo._id;
+
+            if (isNaN(amount) || amount < 900) {
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Minimum withdrawal amount is ₹900.';
+                messageDiv.classList.add("error-message");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+                return;
+            }
+
+            // Check if user has sufficient balance
+            if (userinfo.balance < amount) {
+                messageDiv.innerHTML = '<i class="fas fa-times-circle"></i> Insufficient balance.';
+                messageDiv.classList.add("error-message");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+                return;
+            }
+
+            try {
+                let response;
+                let requestBody;
+                let endpoint;
+
+                if (method === "upi") {
+                    const upiID = document.getElementById("upiField").value.trim();
+                    if (!upiID) {
+                        messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please enter your UPI ID.';
+                        messageDiv.classList.add("error-message");
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+                        return;
+                    }
+                    endpoint = `${backendUrl}/upiwithdraw`;
+                    requestBody = {
+                        amountentered: amount,
+                        userID: userID,
+                        upiId: upiID,
+                    };
+                } else { // Bank withdrawal
+                    const accHolder = document.getElementById("accHolder").value.trim();
+                    const bankName = document.getElementById("bankName").value.trim();
+                    const accountNo = document.getElementById("accountNo").value.trim();
+                    const ifsc = document.getElementById("ifsc").value.trim();
+
+                    if (!accHolder || !bankName || !accountNo || !ifsc) {
+                        messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please fill all bank details.';
+                        messageDiv.classList.add("error-message");
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+                        return;
+                    }
+                    endpoint = `${backendUrl}/bankwithdraw`;
+                    requestBody = {
+                        amountentered: amount,
+                        userID: userID,
+                        accHolder: accHolder,
+                        bankName: bankName,
+                        accountNumber: accountNo,
+                        ifscCode: ifsc,
+                    };
+                }
+
+                response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json; charset=UTF-8",
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageDiv.classList.add("success-message");
+                    messageDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${result.message || "Withdrawal request submitted successfully!"}`;
+                    amountInput.value = "";
+                    document.getElementById("upiField").value = "";
+                    document.getElementById("accHolder").value = "";
+                    document.getElementById("bankName").value = "";
+                    document.getElementById("accountNo").value = "";
+                    document.getElementById("ifsc").value = "";
+                    document.getElementById("method").value = "upi"; // Reset to UPI for next withdrawal
+                    toggleFields(); // Ensure fields are reset correctly
+
+                    // Update session storage balance (assuming backend sends updated balance or you deduct client-side)
+                    if (userinfo.balance !== undefined) {
+                        userinfo.balance -= amount; // Deduct the amount client-side for immediate visual update
+                        sessionStorage.setItem("user", JSON.stringify(userinfo));
+                        updateBalanceDisplay(); // Update display with new balance
+                    }
+
+                } else {
+                    messageDiv.classList.add("error-message");
+                    messageDiv.innerHTML = `<i class="fas fa-times-circle"></i> ${result.message || "Withdrawal failed. Please try again."}`;
+                }
+            } catch (err) {
+                console.error("Error during withdrawal:", err);
+                messageDiv.classList.add("error-message");
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> An error occurred. Please try again later.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+            }
+        }
+
+        // Initialize correct fields and update balance on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleFields();
+            updateBalanceDisplay(); // Call this on page load
+        });
+    </script>
+</body>
+</html>

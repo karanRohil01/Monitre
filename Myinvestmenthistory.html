@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>monitre - Investment History</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Universal Box Sizing for better responsiveness */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* --- monitre Color Palette --- */
+      :root {
+        --monitre-blue-dark: #1a535c; /* Deep, trustworthy blue */
+        --monitre-blue-light: #2e86de; /* Brighter, action blue */
+        --monitre-green: #52b788; /* Growth green */
+        --monitre-white: #ffffff;
+        --monitre-light-gray: #f8f8f8;
+        --monitre-text-gray: #333333; /* For text on light backgrounds */
+        --monitre-border-gray: #e0e0e0; /* For borders on light backgrounds */
+
+        /* Mapped variables from your new CSS for consistent use */
+        --glass-bg-base: rgba(255, 255, 255, 0.1);
+        --glass-border-base: rgba(255, 255, 255, 0.3);
+        --glass-shadow-base: rgba(0, 0, 0, 0.25);
+
+        --page-text-color: var(--monitre-white); /* General text color for page content */
+        --accent-color-primary: var(--monitre-green); /* Main highlights, icons */
+        --accent-color-secondary: var(--monitre-blue-light); /* Buttons, links */
+        --button-gradient-start: var(--monitre-blue-light);
+        --button-gradient-end: var(--monitre-blue-dark);
+
+        --success-color: var(--monitre-green);
+        --error-color: #dc3545; /* Kept default red as no specific mapping in new colors */
+      }
+
+      /* Base font size for responsive scaling with rem units */
+      html {
+        font-size: 16px; /* Default for 1rem */
+        height: 100%; /* Ensures html takes full height */
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        min-height: 100vh; /* Ensures body takes at least full viewport height */
+        background: linear-gradient(
+          135deg,
+          var(--monitre-blue-dark),
+          var(--monitre-green)
+        ); /* Gradient background */
+        color: var(--page-text-color); /* General text color for page content */
+        overflow-y: auto; /* Allow vertical scrolling if content overflows */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        position: relative; /* For the fixed background blur */
+      }
+
+      /* Glass Effect Background Blur for the body */
+      body::before {
+        content: "";
+        position: fixed; /* Keep it fixed so it doesn't scroll with content */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(8px); /* Adjust blur intensity */
+        -webkit-backdrop-filter: blur(8px);
+        z-index: -1; /* Ensure it stays behind content */
+      }
+
+      /* Header (previously 'header') - now using page-header concept for styling */
+      .page-header {
+        width: 100%;
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.8
+        ); /* Slightly transparent */
+        padding: 1.5rem 2.5rem; /* Top/bottom 24px, left/right 40px */
+        color: var(--monitre-white);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        z-index: 2; /* Ensure it's above the blur */
+        display: flex; /* Maintain flex for content within */
+        justify-content: center; /* Center the content within the header */
+        align-items: center;
+        flex-wrap: wrap; /* Allow items to wrap on small screens */
+        gap: 1rem; /* Spacing between logo and tagline if they wrap */
+        margin-bottom: 20px; /* Space below header */
+      }
+
+      .page-header .logo-text {
+        margin: 0;
+        font-size: 2rem; /* 32px */
+        font-weight: 700;
+      }
+
+      .page-header i {
+        color: var(--accent-color-primary); /* Use green accent for icon */
+        margin-left: 10px;
+      }
+
+      /* Outer Container (previously '.outerdiv') - adapting .main-container style */
+      .outerdiv {
+        width: 90%;
+        max-width: 900px; /* Keeping original max-width for content layout */
+        margin: 1.5rem auto; /* Vertical margin to create spacing around the container */
+        padding: 20px; /* Keep existing padding for internal elements */
+
+        background: var(--glass-bg-base); /* Semi-transparent white for glass effect */
+        border-radius: 1.25rem; /* 20px - from new .main-container */
+        box-shadow: 0 0.625rem 2.5rem 0 var(--glass-shadow-base); /* 0 10px 40px */
+        backdrop-filter: blur(10px); /* Stronger blur for the container itself */
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border-base);
+        overflow: hidden; /* Contains internal panels */
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease-in-out; /* Smooth transition for responsiveness */
+        display: flex; /* Keep existing flex properties */
+        flex-direction: column;
+        gap: 20px; /* Space between sections */
+        flex-grow: 1; /* Allows container to take up available space */
+        color: var(--page-text-color); /* Ensure text in outerdiv is white */
+      }
+
+      /* General Section Styling (inside .outerdiv) */
+      section {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05); /* Slightly more transparent glass for internal sections */
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 10px var(--glass-shadow-base);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--page-text-color); /* Ensure text in sections is white */
+      }
+
+      h3 {
+        color: white;
+        margin-bottom: 25px;
+        text-align: center;
+        font-weight: 600;
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.8),
+          0 0 15px rgba(82, 183, 136, 0.4); /* Stronger glow for h3 */
+      }
+
+      /* --- Fixed Footer --- */
+      .otheropt {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.8
+        ); /* Slightly transparent */
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -4px 15px var(--glass-shadow-base);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+
+      .otheropt button,
+      .otheropt a {
+        background: transparent;
+        border: none;
+        color: var(--monitre-white);
+        font-size: 1.5em;
+        cursor: pointer;
+        padding: 10px;
+        transition: color 0.3s ease, transform 0.3s ease;
+        text-decoration: none; /* For anchor tags */
+      }
+
+      .otheropt button:hover,
+      .otheropt a:hover {
+        color: var(--accent-color-primary);
+        transform: scale(1.1);
+      }
+
+      /* --- Investment History Table Styling --- */
+      .history-table-container {
+        width: 100%;
+        overflow-x: auto; /* Allows horizontal scrolling on small screens */
+        margin-top: 20px;
+      }
+
+      .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      .history-table th,
+      .history-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--page-text-color);
+      }
+
+      .history-table th {
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.6
+        ); /* Darker transparent blue for header */
+        font-weight: 600;
+        white-space: nowrap; /* Prevent wrapping of column headers */
+      }
+
+      .history-table tbody tr:hover {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.08
+        ); /* Slight highlight on hover */
+      }
+
+      .no-history-message {
+        text-align: center;
+        padding: 30px;
+        font-size: 1.1em;
+        color: var(--page-text-color);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1024px) {
+        html {
+          font-size: 15px;
+        }
+        .page-header {
+          padding: 1rem 1.5rem;
+        }
+        .outerdiv {
+          width: 95%;
+          margin: 1rem auto;
+        }
+        section {
+          padding: 2.5rem;
+        }
+        h3 {
+          font-size: 1.5em;
+          margin-bottom: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px;
+        }
+        .page-header {
+          flex-direction: column;
+          padding: 1rem 1rem;
+          text-align: center;
+        }
+        body {
+          justify-content: flex-start;
+          padding-top: 0;
+        }
+        .outerdiv {
+          flex-direction: column;
+          margin: 1rem auto;
+          border-radius: 1rem;
+          max-width: 95%;
+          flex-grow: 1;
+        }
+        section {
+          padding: 1.5rem;
+        }
+        .otheropt button,
+        .otheropt a {
+          font-size: 1.3em;
+        }
+      }
+
+      @media (max-width: 480px) {
+        html {
+          font-size: 13px;
+        }
+        .page-header {
+          padding: 0.8rem 0.8rem;
+        }
+        section {
+          padding: 1rem;
+        }
+        .otheropt button,
+        .otheropt a {
+          font-size: 1.1em;
+        }
+        .history-table th,
+        .history-table td {
+          padding: 8px 10px; /* Smaller padding for compact view */
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-header">
+      <span class="logo-text">monitre <i class="fa-solid fa-feather"></i></span>
+    </header>
+
+    <div class="outerdiv">
+      <section class="investment-history-section">
+        <h3>📊 Investment History</h3>
+        <div class="history-table-container">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Plan Name</th>
+                <th>Amount</th>
+                <th>Daily Return</th>
+                <th>Duration</th>
+                <th>Investment Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="investmentHistoryTableBody">
+              </tbody>
+          </table>
+          <p id="noHistoryMessage" class="no-history-message" style="display: none;">
+            No investment history found. Start investing today!
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="otheropt">
+      <a href="index.html">
+        <i class="fa-solid fa-house"></i>
+      </a>
+      <button id="logoutButton">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </button>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_BASE_URL = "https://richmindsbackend.onrender.com"; // Ensure this matches your backend port
+      const logoutButton = document.getElementById("logoutButton");
+      const investmentHistoryTableBody = document.getElementById(
+        "investmentHistoryTableBody"
+      );
+      const noHistoryMessage = document.getElementById("noHistoryMessage");
+
+      // Logout functionality
+      logoutButton.addEventListener("click", () => {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
+        console.log("You have been logged out.");
+        window.location.href = "login.html"; // Redirect to login page
+      });
+
+      // Function to fetch and display investment history
+      async function fetchInvestmentHistory() {
+        const userString = sessionStorage.getItem("user");
+        const token = sessionStorage.getItem("token");
+
+        if (!userString || !token) {
+          console.log(
+            "User not logged in. Redirecting to login.html to view history."
+          );
+          window.location.href = "login.html"; // Redirect to login page if not logged in
+          return;
+        }
+
+        const user = JSON.parse(userString);
+        const userId = user._id; // Assuming _id is stored in the user object
+
+        try {
+          // Adjust this endpoint based on your actual backend API for fetching history
+          const response = await fetch(
+            `${API_BASE_URL}/investments/history/${userId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            if (data.investments && data.investments.length > 0) {
+              investmentHistoryTableBody.innerHTML = ""; // Clear existing content
+              data.investments.forEach((investment) => {
+                const row = `
+                  <tr>
+                    <td>${investment.planDetails.name || "N/A"}</td>
+                    <td>₹${parseFloat(investment.investedAmount).toFixed(2)}</td>
+                    <td>${
+                      investment.planDetails.dailyReturn ||
+                      investment.planDetails.returnPercentage ||
+                      "N/A"
+                    }${
+                  investment.planDetails.dailyReturn ? "% Daily" : ""
+                }</td>
+                    <td>${investment.planDetails.duration || "N/A"}</td>
+                    <td>${new Date(investment.startDate).toLocaleDateString()}</td>
+                    <td>${investment.status || "Active"}</td>
+                  </tr>
+                `;
+                investmentHistoryTableBody.insertAdjacentHTML("beforeend", row);
+              });
+              noHistoryMessage.style.display = "none";
+            } else {
+              investmentHistoryTableBody.innerHTML = "";
+              noHistoryMessage.style.display = "block";
+            }
+          } else {
+            console.error(
+              "Failed to fetch investment history:",
+              data.message || "Unknown error"
+            );
+            investmentHistoryTableBody.innerHTML = "";
+            noHistoryMessage.textContent =
+              data.message || "Error loading history. Please try again.";
+            noHistoryMessage.style.display = "block";
+          }
+        } catch (error) {
+          console.error("Error fetching investment history:", error);
+          investmentHistoryTableBody.innerHTML = "";
+          noHistoryMessage.textContent =
+            "An error occurred. Please check your network connection.";
+          noHistoryMessage.style.display = "block";
+        }
+      }
+
+      // Fetch investment history when the page loads
+      document.addEventListener("DOMContentLoaded", fetchInvestmentHistory);
+    </script>
+  </body>
+</html>

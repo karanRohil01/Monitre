@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>monitre - My Active Plans</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Universal Box Sizing for better responsiveness */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* --- monitre Color Palette --- */
+      :root {
+        --monitre-blue-dark: #1a535c; /* Deep, trustworthy blue */
+        --monitre-blue-light: #2e86de; /* Brighter, action blue */
+        --monitre-green: #52b788; /* Growth green */
+        --monitre-white: #ffffff;
+        --monitre-light-gray: #f8f8f8;
+        --monitre-text-gray: #333333; /* For text on light backgrounds */
+        --monitre-border-gray: #e0e0e0; /* For borders on light backgrounds */
+
+        /* Glass effect variables */
+        --glass-bg-base: rgba(255, 255, 255, 0.08); /* Slightly less opaque for better depth */
+        --glass-border-base: rgba(255, 255, 255, 0.2); /* Thinner, subtle border */
+        --glass-shadow-base: rgba(0, 0, 0, 0.3); /* Slightly darker shadow for contrast */
+        --glass-blur-intensity: 12px; /* Increased blur for stronger effect */
+
+        /* Mapped variables for consistent use */
+        --page-text-color: var(--monitre-white); /* General text color for page content */
+        --accent-color-primary: var(--monitre-green); /* Main highlights, icons */
+        --accent-color-secondary: var(--monitre-blue-light); /* Buttons, links */
+        --button-gradient-start: var(--monitre-blue-light);
+        --button-gradient-end: var(--monitre-blue-dark);
+
+        --success-color: var(--monitre-green);
+        --error-color: #dc3545; /* Kept default red */
+      }
+
+      /* Base font size for responsive scaling with rem units */
+      html {
+        font-size: 16px; /* Default for 1rem */
+        height: 100%; /* Ensures html takes full height */
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        min-height: 100vh; /* Ensures body takes at least full viewport height */
+        background: linear-gradient(
+          135deg,
+          var(--monitre-blue-dark),
+          var(--monitre-green)
+        ); /* Gradient background */
+        color: var(--page-text-color); /* General text color for page content */
+        overflow-y: auto; /* Allow vertical scrolling if content overflows */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        position: relative; /* For the fixed background blur */
+      }
+
+      /* Glass Effect Background Blur for the body */
+      body::before {
+        content: "";
+        position: fixed; /* Keep it fixed so it doesn't scroll with content */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(var(--glass-blur-intensity)); /* Adjust blur intensity */
+        -webkit-backdrop-filter: blur(var(--glass-blur-intensity));
+        z-index: -1; /* Ensure it stays behind content */
+      }
+
+      /* Header */
+      .page-header {
+        width: 100%;
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.7
+        ); /* Slightly more transparent */
+        padding: 1.25rem 2rem; /* Adjusted padding */
+        color: var(--monitre-white);
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3); /* Stronger text shadow */
+        z-index: 2; /* Ensure it's above the blur */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 25px; /* More space below header */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .page-header .logo-text {
+        margin: 0;
+        font-size: 2.2rem; /* Slightly larger */
+        font-weight: 700;
+        letter-spacing: 0.05em; /* Subtle letter spacing */
+      }
+
+      .page-header i {
+        color: var(--accent-color-primary); /* Use green accent for icon */
+        margin-left: 12px;
+        filter: drop-shadow(0 0 5px rgba(82, 183, 136, 0.6)); /* Glow effect for icon */
+      }
+
+      /* Outer Container */
+      .outerdiv {
+        width: 90%;
+        max-width: 950px; /* Slightly increased max-width */
+        margin: 2rem auto; /* Increased vertical margin */
+        padding: 25px; /* Increased padding */
+
+        background: var(--glass-bg-base); /* Semi-transparent white for glass effect */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 0.8rem 3rem 0 var(--glass-shadow-base); /* Larger, softer shadow */
+        backdrop-filter: blur(var(--glass-blur-intensity)); /* Stronger blur for the container itself */
+        -webkit-backdrop-filter: blur(var(--glass-blur-intensity));
+        border: 1px solid var(--glass-border-base);
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        transition: all 0.4s ease-in-out; /* Smoother transition */
+        display: flex;
+        flex-direction: column;
+        gap: 25px; /* More space between sections */
+        flex-grow: 1;
+        color: var(--page-text-color);
+      }
+
+      /* General Section Styling (inside .outerdiv) */
+      section {
+        padding: 25px; /* Consistent padding */
+        background: rgba(255, 255, 255, 0.05); /* Slightly more transparent glass for internal sections */
+        border-radius: 15px; /* More rounded */
+        border: 1px solid rgba(255, 255, 255, 0.12); /* Subtle border */
+        box-shadow: 0 5px 15px var(--glass-shadow-base); /* Softer shadow */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--page-text-color);
+      }
+
+      h3 {
+        color: var(--monitre-white);
+        margin-bottom: 30px; /* More space below headings */
+        text-align: center;
+        font-weight: 600;
+        font-size: 1.8rem; /* Larger heading */
+        text-shadow: 0 0 10px rgba(82, 183, 136, 0.7),
+          0 0 20px rgba(82, 183, 136, 0.3); /* Stronger glow for h3 */
+      }
+
+      /* --- User Details Section --- */
+      .user-details {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px; /* Adjusted spacing */
+      }
+
+      .user-details img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border: 4px solid var(--accent-color-primary); /* Thicker green border */
+        box-shadow: 0 0 15px rgba(82, 183, 136, 0.7); /* Stronger glow */
+        object-fit: cover;
+        margin-bottom: 15px;
+      }
+
+      .user-details h5,
+      .user-details p {
+        margin: 0;
+        color: var(--page-text-color);
+      }
+
+      .user-details h5 {
+        font-size: 1.3em;
+        font-weight: 600;
+      }
+
+      .total-amt {
+        font-size: 1.3em; /* Larger balance text */
+        font-weight: bold;
+        color: var(--accent-color-primary);
+        margin-top: 15px;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      }
+
+      .user-details div {
+        display: flex;
+        flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+        justify-content: center;
+        gap: 8px; /* Space between buttons */
+        margin-top: 15px; /* Space above buttons */
+      }
+
+      .user-details div button,
+      .user-details div a.button { /* Style anchor as button */
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 12px 25px; /* Larger buttons */
+        border-radius: 30px; /* More rounded */
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35); /* Stronger shadow */
+        text-decoration: none; /* For the anchor tag */
+        display: inline-block; /* For the anchor tag */
+      }
+
+      .user-details div button:hover,
+      .user-details div a.button:hover {
+        transform: translateY(-3px); /* More pronounced lift */
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        color: var(--monitre-white); /* Ensure text color doesn't change on hover for anchor */
+      }
+
+      /* --- Investment Section --- */
+      .investment-card {
+        background: rgba(
+          255,
+          255,
+          255,
+          0.07
+        ); /* Slightly more transparent glass */
+        border-radius: 18px; /* More rounded corners */
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
+        box-shadow: 0 6px 20px var(--glass-shadow-base); /* Enhanced shadow */
+        backdrop-filter: blur(10px); /* Stronger card blur */
+        -webkit-backdrop-filter: blur(10px);
+        padding: 25px; /* Increased padding */
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smoother transitions */
+        color: var(--page-text-color);
+      }
+
+      .investment-card:hover {
+        transform: translateY(-8px); /* More pronounced lift */
+        box-shadow: 0 15px 30px var(--glass-shadow-base); /* Larger, more diffused shadow */
+      }
+
+      .investment-card .investment-image {
+        width: 100%;
+        height: 160px; /* Slightly taller images */
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 20px; /* More space below image */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .investment-card h4 {
+        color: var(--monitre-white);
+        margin-bottom: 12px;
+        font-weight: 600;
+        font-size: 1.4rem; /* Larger card titles */
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.6); /* Stronger glow for h4 */
+      }
+
+      .investment-card p {
+        font-size: 0.95em; /* Slightly larger paragraph text */
+        margin-bottom: 18px;
+        flex-grow: 1;
+        color: var(--page-text-color);
+      }
+
+      .investment-card ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+        text-align: left;
+        font-size: 0.9em;
+        color: var(--page-text-color);
+      }
+
+      .investment-card ul li {
+        margin-bottom: 8px; /* More spacing in list items */
+      }
+
+      .investment-card .highlight {
+        color: var(--accent-color-primary);
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(82, 183, 136, 0.4);
+      }
+
+      .investment-card .small-info {
+        font-size: 0.85em; /* Slightly larger small info */
+        color: var(--page-text-color);
+        margin-top: -12px; /* Adjusted position */
+        margin-bottom: 22px;
+      }
+
+      .invest-button {
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 12px 30px; /* Larger buttons */
+        border-radius: 30px; /* More rounded */
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35);
+      }
+
+      .invest-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        color: var(--monitre-white);
+      }
+
+      /* --- Refer and Earn Button Section --- */
+      .refer-earn-button-section {
+        text-align: center;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 5px 15px var(--glass-shadow-base);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--page-text-color);
+      }
+
+      .refer-earn-button-section h3 {
+        margin-bottom: 20px;
+      }
+
+      .refer-earn-button-section .refer-button {
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 15px 35px; /* Larger button */
+        border-radius: 30px; /* More rounded */
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35);
+        text-decoration: none; /* For the anchor tag */
+        display: inline-block; /* For the anchor tag */
+        font-size: 1.1em;
+      }
+
+      .refer-earn-button-section .refer-button:hover {
+        transform: translateY(-3px); /* More pronounced lift */
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        color: var(--monitre-white);
+      }
+
+      /* --- Contact Us Section --- */
+      .contact-us {
+        text-align: center;
+        font-size: 0.95em; /* Slightly larger text */
+        padding: 20px 25px;
+        margin-top: 25px; /* More space above */
+        color: var(--page-text-color);
+      }
+
+      .contact-us a {
+        color: var(--accent-color-secondary);
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.2s ease;
+      }
+
+      .contact-us a:hover {
+        text-decoration: underline;
+        color: var(--monitre-blue-light); /* Lighter blue on hover */
+      }
+
+      /* --- Modals (General Styling) --- */
+      .modal-content.professional-modal-content,
+      .modal-content.success-modal-content {
+        background: rgba(255, 255, 255, 0.1); /* Glass background for modals */
+        backdrop-filter: blur(18px); /* Stronger blur for modals */
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly more visible border */
+        border-radius: 20px; /* More rounded */
+        box-shadow: 0 10px 50px var(--glass-shadow-base); /* Larger shadow */
+        color: var(--page-text-color);
+      }
+
+      .modal-header.professional-modal-header,
+      .modal-header.success-modal-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.6
+        ); /* Darker blue with more transparency */
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: 15px 25px; /* More padding */
+      }
+
+      .modal-title {
+        color: var(--accent-color-primary);
+        font-weight: bold;
+        font-size: 1.6rem; /* Larger modal titles */
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.6); /* Stronger glow for h3 */
+      }
+
+      .btn-close.professional-btn-close {
+        filter: invert(1);
+        font-size: 1.2em; /* Larger close button */
+      }
+
+      .modal-body.professional-modal-body {
+        text-align: center;
+        padding: 35px; /* More padding */
+        color: var(--page-text-color);
+      }
+
+      .modal-announcement {
+        font-size: 1.15em; /* Slightly larger announcement text */
+        margin-top: 20px;
+      }
+
+      .highlight-date {
+        color: var(--accent-color-primary);
+        font-weight: bold;
+        font-size: 1.3em; /* Larger highlight date */
+        text-shadow: 0 0 5px rgba(82, 183, 136, 0.4);
+      }
+
+      .small-text {
+        font-size: 0.9em; /* Slightly larger small text */
+        color: var(--page-text-color);
+      }
+
+      .modal-footer.professional-modal-footer,
+      .modal-footer.success-modal-footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.6
+        ); /* Darker blue with more transparency */
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 15px 25px;
+      }
+
+      .btn-primary.professional-btn-primary {
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 10px 25px; /* Larger buttons */
+        border-radius: 25px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-primary.professional-btn-primary:hover {
+        opacity: 0.95;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.45);
+      }
+
+      /* --- Investment Modal Specifics --- */
+      #investAmount {
+        background: rgba(255, 255, 255, 0.15); /* Slightly less transparent input */
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: var(--page-text-color);
+        border-radius: 10px; /* More rounded input */
+        padding: 12px; /* More padding */
+        font-size: 1.1em; /* Larger font size */
+      }
+      #investAmount::placeholder {
+        color: rgba(var(--monitre-white), 0.6); /* Adjusted placeholder color */
+      }
+
+      /* --- Tiered Plan Modal Cards --- */
+      .investment-tier-modal-card,
+      .hot-deal-modal-card,
+      .daily-income-modal-card { /* Added new class */
+        background: rgba(255, 255, 255, 0.08); /* Consistent glass background */
+        border-radius: 18px; /* Consistent rounded corners */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 6px 20px var(--glass-shadow-base);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 25px; /* Consistent padding */
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: var(--page-text-color);
+      }
+
+      .investment-tier-modal-card:hover,
+      .hot-deal-modal-card:hover,
+      .daily-income-modal-card:hover { /* Added new class */
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px var(--glass-shadow-base);
+      }
+
+      .investment-tier-modal-card h4,
+      .hot-deal-modal-card h4,
+      .daily-income-modal-card h4 { /* Added new class */
+        color: var(--monitre-white);
+        margin-bottom: 18px;
+        font-size: 1.3rem; /* Larger titles */
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.6);
+      }
+      .investment-tier-modal-card ul,
+      .hot-deal-modal-card ul,
+      .daily-income-modal-card ul { /* Added new class */
+        list-style: none;
+        padding: 0;
+        margin-bottom: 25px; /* More spacing */
+        text-align: left;
+        font-size: 0.98em; /* Slightly larger list text */
+        color: var(--page-text-color);
+      }
+
+      .deal-highlight {
+        font-weight: bold;
+        color: var(--accent-color-primary);
+        font-size: 1.15em; /* Slightly larger highlight */
+        margin-bottom: 12px;
+        text-shadow: 0 0 5px rgba(82, 183, 136, 0.4);
+      }
+
+      /* --- Success Modal --- */
+      .success-modal-content {
+        border-color: var(--success-color);
+      }
+      .success-modal-header {
+        background-color: rgba(var(--success-color), 0.5);
+      }
+      .success-modal-body {
+        text-align: center;
+        color: var(--page-text-color);
+      }
+      .success-icon i {
+        font-size: 3.5em; /* Larger icon */
+        color: var(--success-color);
+        animation: scaleIn 0.5s ease-out;
+        filter: drop-shadow(0 0 10px rgba(82, 183, 136, 0.8)); /* Glow effect */
+      }
+      .success-message {
+        font-size: 1.3em; /* Larger message */
+        font-weight: bold;
+        color: var(--page-text-color);
+      }
+      .btn-success-ok {
+        background-color: var(--success-color);
+        border: none;
+        color: var(--monitre-white);
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-success-ok:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      /* --- Fixed Footer --- */
+      .otheropt {
+        position: sticky; /* Changed to sticky to avoid fixed overlapping content on small screens */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.7
+        ); /* Slightly more transparent */
+        padding: 12px 0; /* More padding */
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -5px 18px var(--glass-shadow-base); /* Stronger shadow */
+        backdrop-filter: blur(8px); /* Stronger blur */
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 100; /* Ensure it's above other content */
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .otheropt button {
+        background: transparent;
+        border: none;
+        color: var(--monitre-white);
+        font-size: 1.7em; /* Larger icons */
+        cursor: pointer;
+        padding: 12px; /* More padding */
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .otheropt button:hover {
+        color: var(--accent-color-primary);
+        transform: scale(1.15); /* More pronounced scale */
+        filter: drop-shadow(0 0 5px rgba(82, 183, 136, 0.6));
+      }
+
+      /* --- Animations --- */
+      @keyframes iconPulse {
+        0% {
+          transform: scale(0.9);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.9);
+          opacity: 0.7;
+        }
+      }
+      .icon-pulse {
+        animation: iconPulse 1.8s infinite ease-in-out; /* Slower, more subtle pulse */
+        font-size: 3.2em; /* Slightly larger */
+        color: var(--accent-color-primary);
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* --- Responsive adjustments --- */
+      @media (max-width: 1024px) {
+        html {
+          font-size: 15px;
+        }
+        .page-header {
+          padding: 1.25rem 1.5rem;
+        }
+        .outerdiv {
+          width: 95%;
+          margin: 1.5rem auto;
+          padding: 20px;
+        }
+        section {
+          padding: 2rem;
+        }
+        .user-details div button {
+          padding: 10px 20px;
+          font-size: 0.95em;
+        }
+        h3 {
+          font-size: 1.6em;
+          margin-bottom: 25px;
+        }
+        .refer-earn-button-section .refer-button {
+          padding: 12px 25px;
+          font-size: 1em;
+        }
+      }
+
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px;
+        }
+        .page-header {
+          flex-direction: column;
+          padding: 1rem 1rem;
+          text-align: center;
+        }
+        body {
+          justify-content: flex-start;
+          padding-top: 0;
+        }
+        .outerdiv {
+          flex-direction: column;
+          margin: 1.5rem auto;
+          border-radius: 1.25rem;
+          max-width: 98%;
+          flex-grow: 1;
+          padding: 20px;
+        }
+        section {
+          padding: 1.5rem;
+        }
+        .user-details img {
+          width: 80px;
+          height: 80px;
+        }
+        .user-details h5 {
+          font-size: 1.2em;
+        }
+        .total-amt {
+          font-size: 1.2em;
+        }
+        .otheropt button {
+          font-size: 1.5em;
+        }
+        .modal-body {
+          padding: 25px;
+        }
+        .modal-title {
+          font-size: 1.4em;
+        }
+        .modal-announcement {
+          font-size: 1.05em;
+        }
+        .highlight-date {
+          font-size: 1.2em;
+        }
+        .investment-card h4 {
+          font-size: 1.25rem;
+        }
+        .refer-earn-button-section .refer-button {
+          padding: 10px 20px;
+          font-size: 0.9em;
+        }
+      }
+
+      @media (max-width: 480px) {
+        html {
+          font-size: 13px;
+        }
+        .page-header {
+          padding: 0.8rem 0.8rem;
+        }
+        section {
+          padding: 1.2rem;
+        }
+        .user-details img {
+          width: 70px;
+          height: 70px;
+        }
+        .user-details h5 {
+          font-size: 1.1em;
+        }
+        .total-amt {
+          font-size: 1.1em;
+        }
+        .otheropt button {
+          font-size: 1.3em;
+        }
+        .modal-title {
+          font-size: 1.2em;
+        }
+        .modal-announcement {
+          font-size: 0.95em;
+        }
+        .highlight-date {
+          font-size: 1.1em;
+        }
+        .investment-card h4 {
+          font-size: 1.15rem;
+        }
+        /* Specific adjustment for user-details buttons on very small screens */
+        .user-details div button,
+        .user-details div a.button {
+          flex-grow: 1; /* Allow buttons to take full width available if needed */
+          max-width: 150px; /* Max width to prevent them from becoming too wide */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-header">
+      <span class="logo-text">monitre <i class="fa-solid fa-feather"></i></span>
+    </header>
+
+    <main class="outerdiv">
+      <section class="user-details">
+        <img src="https://img.freepik.com/premium-vector/character-avatar-isolated_729149-194801.jpg" alt="User Avatar" />
+        <h5 class="mb-1" id="userName">User-Name</h5>
+        <p class="mb-1" id="userEmail">user@example.com</p>
+        <p class="mb-1" id="userNumber">N/A</p>
+        <p class="total-amt">My Balance: ₹<span id="avail-bal">0.00</span></p>
+        <div>
+          <button class="add-mon" id="deposit">Add Money</button>
+          <button class="withdraw-mon" id="withdraw">Withdraw</button>
+          <a href="Myinvestmenthistory.html" class="button">History</a>
+        </div>
+      </section>
+
+      <section class="active-plans-section">
+        <h3>My Active Plans</h3>
+        <div id="activePlansList" class="row g-4 justify-content-center">
+          <p class="text-center">Your active investment plans will appear here.</p>
+          <div class="col-md-6 col-lg-4">
+            <div class="investment-card">
+              <h4>Plan Name: Example Plan</h4>
+              <ul>
+                <li>Invested Amount: <span class="highlight">₹1,000.00</span></li>
+                <li>Daily Earning: <span class="highlight">₹20.00 (2.0%)</span></li>
+                <li>Duration: <span class="highlight">30 Days</span></li>
+                <li>Days Remaining: <span class="highlight">15</span></li>
+                <li>Total Earned So Far: <span class="highlight">₹300.00</span></li>
+              </ul>
+              <button class="invest-button" disabled>Active</button>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="investment-card">
+              <h4>Plan Name: Another Plan</h4>
+              <ul>
+                <li>Invested Amount: <span class="highlight">₹5,000.00</span></li>
+                <li>Daily Earning: <span class="highlight">₹75.00 (1.5%)</span></li>
+                <li>Duration: <span class="highlight">60 Days</span></li>
+                <li>Days Remaining: <span class="highlight">40</span></li>
+                <li>Total Earned So Far: <span class="highlight">₹1,500.00</span></li>
+              </ul>
+              <button class="invest-button" disabled>Active</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div
+      class="modal fade"
+      id="investmentModal"
+      tabindex="-1"
+      aria-labelledby="investmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content professional-modal-content">
+          <div class="modal-header professional-modal-header">
+            <h5 class="modal-title" id="investmentModalLabel">Confirm Investment</h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body professional-modal-body">
+            <p id="investmentPlanDetails"></p>
+            <div class="mb-3">
+              <label for="investAmount" class="form-label">Enter Amount to Invest</label>
+              <input
+                type="number"
+                class="form-control"
+                id="investAmount"
+                placeholder="e.g., 500"
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </div>
+          <div class="modal-footer professional-modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary professional-btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary professional-btn-primary"
+              id="confirmInvestmentBtn"
+            >
+              Invest Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="investmentSuccessModal"
+      tabindex="-1"
+      aria-labelledby="investmentSuccessModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content success-modal-content">
+          <div class="modal-header success-modal-header">
+            <h5 class="modal-title" id="investmentSuccessModalLabel">Status</h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body success-modal-body">
+            <div class="success-icon mb-3">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <p class="success-message" id="successMessageText">
+              Investment successful!
+            </p>
+          </div>
+          <div class="modal-footer success-modal-footer">
+            <button
+              type="button"
+              class="btn btn-success-ok professional-btn-primary"
+              data-bs-dismiss="modal"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="otheropt">
+      <button onclick="window.location.href='index.html'">
+        <i class="fa-solid fa-house"></i>
+      </button>
+      <button onclick="window.location.href='activeplans.html'">
+        <i class="fa-solid fa-rocket icon-pulse"></i>
+      </button>
+      <button onclick="window.location.href='#'">
+        <i class="fa-solid fa-user"></i>
+      </button>
+      <button onclick="window.location.href='#'">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      console.log("activeplans.html script loaded.");
+
+      // Load user data from session storage
+      const availbal = document.getElementById("avail-bal");
+      const userName = document.getElementById("userName");
+      const userEmail = document.getElementById("userEmail");
+      const userNumber = document.getElementById("userNumber");
+
+      let user = JSON.parse(sessionStorage.getItem("user"));
+      if (user) {
+        availbal.textContent = parseFloat(user.balance).toFixed(2);
+        userName.textContent = user.name;
+        userEmail.textContent = user.email;
+        userNumber.textContent = user.number;
+      } else {
+        // Redirect to login or set default values if no user is found
+        console.log("No user data found in session storage. Redirecting or using defaults.");
+        // Example: window.location.href = 'login.html';
+      }
+
+      // Initialize modals
+      const investmentSuccessModal = new bootstrap.Modal(
+        document.getElementById("investmentSuccessModal")
+      );
+
+      // Event listener for general 'Add Money' and 'Withdraw' buttons (if they exist)
+      // These are kept for UI consistency, but their backend functionality is not implemented here.
+      document.getElementById("deposit")?.addEventListener("click", () => {
+        alert("Add Money functionality is under development.");
+      });
+
+      document.getElementById("withdraw")?.addEventListener("click", () => {
+        alert("Withdraw functionality is under development.");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>monitre - Invest with Us</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Universal Box Sizing for better responsiveness */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* --- monitre Color Palette --- */
+      :root {
+        --monitre-blue-dark: #1a535c; /* Deep, trustworthy blue */
+        --monitre-blue-light: #2e86de; /* Brighter, action blue */
+        --monitre-green: #52b788; /* Growth green */
+        --monitre-white: #ffffff;
+        --monitre-light-gray: #f8f8f8;
+        --monitre-text-gray: #333333; /* For text on light backgrounds */
+        --monitre-border-gray: #e0e0e0; /* For borders on light backgrounds */
+
+        /* Glass effect variables */
+        --glass-bg-base: rgba(255, 255, 255, 0.08); /* Slightly less opaque for better depth */
+        --glass-border-base: rgba(255, 255, 255, 0.2); /* Thinner, subtle border */
+        --glass-shadow-base: rgba(0, 0, 0, 0.3); /* Slightly darker shadow for contrast */
+        --glass-blur-intensity: 12px; /* Increased blur for stronger effect */
+
+        /* Mapped variables for consistent use */
+        --page-text-color: var(--monitre-white); /* General text color for page content */
+        --accent-color-primary: var(--monitre-green); /* Main highlights, icons */
+        --accent-color-secondary: var(--monitre-blue-light); /* Buttons, links */
+        --button-gradient-start: var(--monitre-blue-light);
+        --button-gradient-end: var(--monitre-blue-dark);
+
+        --success-color: var(--monitre-green);
+        --error-color: #dc3545; /* Kept default red */
+      }
+
+      /* Base font size for responsive scaling with rem units */
+      html {
+        font-size: 16px; /* Default for 1rem */
+        height: 100%; /* Ensures html takes full height */
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        min-height: 100vh; /* Ensures body takes at least full viewport height */
+        background: linear-gradient(
+          135deg,
+          var(--monitre-blue-dark),
+          var(--monitre-green)
+        ); /* Gradient background */
+        color: var(--page-text-color); /* General text color for page content */
+        overflow-y: auto; /* Allow vertical scrolling if content overflows */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        position: relative; /* For the fixed background blur */
+      }
+
+      /* Glass Effect Background Blur for the body */
+      body::before {
+        content: "";
+        position: fixed; /* Keep it fixed so it doesn't scroll with content */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(var(--glass-blur-intensity)); /* Adjust blur intensity */
+        -webkit-backdrop-filter: blur(var(--glass-blur-intensity));
+        z-index: -1; /* Ensure it stays behind content */
+      }
+
+      /* Header */
+      .page-header {
+        width: 100%;
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.7
+        ); /* Slightly more transparent */
+        padding: 1.25rem 2rem; /* Adjusted padding */
+        color: var(--monitre-white);
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3); /* Stronger text shadow */
+        z-index: 2; /* Ensure it's above the blur */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 25px; /* More space below header */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .page-header .logo-text {
+        margin: 0;
+        font-size: 2.2rem; /* Slightly larger */
+        font-weight: 700;
+        letter-spacing: 0.05em; /* Subtle letter spacing */
+      }
+
+      .page-header i {
+        color: var(--accent-color-primary); /* Use green accent for icon */
+        margin-left: 12px;
+        filter: drop-shadow(0 0 5px rgba(82, 183, 136, 0.6)); /* Glow effect for icon */
+      }
+
+      /* Outer Container */
+      .outerdiv {
+        width: 90%;
+        max-width: 950px; /* Slightly increased max-width */
+        margin: 2rem auto; /* Increased vertical margin */
+        padding: 25px; /* Increased padding */
+
+        background: var(--glass-bg-base); /* Semi-transparent white for glass effect */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 0.8rem 3rem 0 var(--glass-shadow-base); /* Larger, softer shadow */
+        backdrop-filter: blur(var(--glass-blur-intensity)); /* Stronger blur for the container itself */
+        -webkit-backdrop-filter: blur(var(--glass-blur-intensity));
+        border: 1px solid var(--glass-border-base);
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        transition: all 0.4s ease-in-out; /* Smoother transition */
+        display: flex;
+        flex-direction: column;
+        gap: 25px; /* More space between sections */
+        flex-grow: 1;
+        color: var(--page-text-color);
+      }
+
+      /* General Section Styling (inside .outerdiv) */
+      section {
+        padding: 25px; /* Consistent padding */
+        background: rgba(255, 255, 255, 0.05); /* Slightly more transparent glass for internal sections */
+        border-radius: 15px; /* More rounded */
+        border: 1px solid rgba(255, 255, 255, 0.12); /* Subtle border */
+        box-shadow: 0 5px 15px var(--glass-shadow-base); /* Softer shadow */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--page-text-color);
+      }
+
+      h3 {
+        color: var(--monitre-white);
+        margin-bottom: 30px; /* More space below headings */
+        text-align: center;
+        font-weight: 600;
+        font-size: 1.8rem; /* Larger heading */
+        text-shadow: 0 0 10px rgba(82, 183, 136, 0.7),
+          0 0 20px rgba(82, 183, 136, 0.3); /* Stronger glow for h3 */
+      }
+
+      /* --- User Details Section --- */
+      .user-details {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px; /* Adjusted spacing */
+      }
+
+      .user-details img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border: 4px solid var(--accent-color-primary); /* Thicker green border */
+        box-shadow: 0 0 15px rgba(82, 183, 136, 0.7); /* Stronger glow */
+        object-fit: cover;
+        margin-bottom: 15px;
+      }
+
+      .user-details h5,
+      .user-details p {
+        margin: 0;
+        color: var(--page-text-color);
+      }
+
+      .user-details h5 {
+        font-size: 1.3em;
+        font-weight: 600;
+      }
+
+      .total-amt {
+        font-size: 1.3em; /* Larger balance text */
+        font-weight: bold;
+        color: var(--accent-color-primary);
+        margin-top: 15px;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      }
+
+      .user-details div {
+        display: flex;
+        flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+        justify-content: center;
+        gap: 8px; /* Space between buttons */
+        margin-top: 15px; /* Space above buttons */
+      }
+
+      .user-details div button,
+      .user-details div a.button { /* Style anchor as button */
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 12px 25px; /* Larger buttons */
+        border-radius: 30px; /* More rounded */
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35); /* Stronger shadow */
+        text-decoration: none; /* For the anchor tag */
+        display: inline-block; /* For the anchor tag */
+      }
+
+      .user-details div button:hover,
+      .user-details div a.button:hover {
+        transform: translateY(-3px); /* More pronounced lift */
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        color: var(--monitre-white); /* Ensure text color doesn't change on hover for anchor */
+      }
+
+      /* --- Investment Section --- */
+      .investment-card {
+        background: rgba(
+          255,
+          255,
+          255,
+          0.07
+        ); /* Slightly more transparent glass */
+        border-radius: 18px; /* More rounded corners */
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
+        box-shadow: 0 6px 20px var(--glass-shadow-base); /* Enhanced shadow */
+        backdrop-filter: blur(10px); /* Stronger card blur */
+        -webkit-backdrop-filter: blur(10px);
+        padding: 25px; /* Increased padding */
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smoother transitions */
+        color: var(--page-text-color);
+      }
+
+      .investment-card:hover {
+        transform: translateY(-8px); /* More pronounced lift */
+        box-shadow: 0 15px 30px var(--glass-shadow-base); /* Larger, more diffused shadow */
+      }
+
+      .investment-card .investment-image {
+        width: 100%;
+        height: 160px; /* Slightly taller images */
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 20px; /* More space below image */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .investment-card h4 {
+        color: var(--monitre-white);
+        margin-bottom: 12px;
+        font-weight: 600;
+        font-size: 1.4rem; /* Larger card titles */
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.6); /* Stronger glow for h4 */
+      }
+
+      .investment-card p {
+        font-size: 0.95em; /* Slightly larger paragraph text */
+        margin-bottom: 18px;
+        flex-grow: 1;
+        color: var(--page-text-color);
+      }
+
+      .investment-card ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+        text-align: left;
+        font-size: 0.9em;
+        color: var(--page-text-color);
+      }
+
+      .investment-card ul li {
+        margin-bottom: 8px; /* More spacing in list items */
+      }
+
+      .investment-card .highlight {
+        color: var(--accent-color-primary);
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(82, 183, 136, 0.4);
+      }
+
+      .investment-card .small-info {
+        font-size: 0.85em; /* Slightly larger small info */
+        color: var(--page-text-color);
+        margin-top: -12px; /* Adjusted position */
+        margin-bottom: 22px;
+      }
+
+      .invest-button {
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 12px 30px; /* Larger buttons */
+        border-radius: 30px; /* More rounded */
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35);
+      }
+
+      .invest-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        color: var(--monitre-white);
+      }
+
+      /* --- Refer and Earn Button Section --- */
+      .refer-earn-button-section {
+        text-align: center;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 5px 15px var(--glass-shadow-base);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--page-text-color);
+      }
+
+      .refer-earn-button-section h3 {
+        margin-bottom: 20px;
+      }
+
+      .refer-earn-button-section .refer-button {
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 15px 35px; /* Larger button */
+        border-radius: 30px; /* More rounded */
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35);
+        text-decoration: none; /* For the anchor tag */
+        display: inline-block; /* For the anchor tag */
+        font-size: 1.1em;
+      }
+
+      .refer-earn-button-section .refer-button:hover {
+        transform: translateY(-3px); /* More pronounced lift */
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        color: var(--monitre-white);
+      }
+
+      /* --- Contact Us Section --- */
+      .contact-us {
+        text-align: center;
+        font-size: 0.95em; /* Slightly larger text */
+        padding: 20px 25px;
+        margin-top: 25px; /* More space above */
+        color: var(--page-text-color);
+      }
+
+      .contact-us a {
+        color: var(--accent-color-secondary);
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.2s ease;
+      }
+
+      .contact-us a:hover {
+        text-decoration: underline;
+        color: var(--monitre-blue-light); /* Lighter blue on hover */
+      }
+
+      /* --- Modals (General Styling) --- */
+      .modal-content.professional-modal-content,
+      .modal-content.success-modal-content {
+        background: rgba(255, 255, 255, 0.1); /* Glass background for modals */
+        backdrop-filter: blur(18px); /* Stronger blur for modals */
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly more visible border */
+        border-radius: 20px; /* More rounded */
+        box-shadow: 0 10px 50px var(--glass-shadow-base); /* Larger shadow */
+        color: var(--page-text-color);
+      }
+
+      .modal-header.professional-modal-header,
+      .modal-header.success-modal-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.6
+        ); /* Darker blue with more transparency */
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: 15px 25px; /* More padding */
+      }
+
+      .modal-title {
+        color: var(--accent-color-primary);
+        font-weight: bold;
+        font-size: 1.6rem; /* Larger modal titles */
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.6); /* Stronger glow for h3 */
+      }
+
+      .btn-close.professional-btn-close {
+        filter: invert(1);
+        font-size: 1.2em; /* Larger close button */
+      }
+
+      .modal-body.professional-modal-body {
+        text-align: center;
+        padding: 35px; /* More padding */
+        color: var(--page-text-color);
+      }
+
+      .modal-announcement {
+        font-size: 1.15em; /* Slightly larger announcement text */
+        margin-top: 20px;
+      }
+
+      .highlight-date {
+        color: var(--accent-color-primary);
+        font-weight: bold;
+        font-size: 1.3em; /* Larger highlight date */
+        text-shadow: 0 0 5px rgba(82, 183, 136, 0.4);
+      }
+
+      .small-text {
+        font-size: 0.9em; /* Slightly larger small text */
+        color: var(--page-text-color);
+      }
+
+      .modal-footer.professional-modal-footer,
+      .modal-footer.success-modal-footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.6
+        ); /* Darker blue with more transparency */
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 15px 25px;
+      }
+
+      .btn-primary.professional-btn-primary {
+        background: linear-gradient(
+          45deg,
+          var(--button-gradient-start),
+          var(--button-gradient-end)
+        );
+        border: none;
+        color: var(--monitre-white);
+        padding: 10px 25px; /* Larger buttons */
+        border-radius: 25px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-primary.professional-btn-primary:hover {
+        opacity: 0.95;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.45);
+      }
+
+      /* --- Investment Modal Specifics --- */
+      #investAmount {
+        background: rgba(255, 255, 255, 0.15); /* Slightly less transparent input */
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: var(--page-text-color);
+        border-radius: 10px; /* More rounded input */
+        padding: 12px; /* More padding */
+        font-size: 1.1em; /* Larger font size */
+      }
+      #investAmount::placeholder {
+        color: rgba(var(--monitre-white), 0.6); /* Adjusted placeholder color */
+      }
+
+      /* --- Tiered Plan Modal Cards --- */
+      .investment-tier-modal-card,
+      .hot-deal-modal-card {
+        background: rgba(255, 255, 255, 0.08); /* Consistent glass background */
+        border-radius: 18px; /* Consistent rounded corners */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 6px 20px var(--glass-shadow-base);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 25px; /* Consistent padding */
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: var(--page-text-color);
+      }
+
+      .investment-tier-modal-card:hover,
+      .hot-deal-modal-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px var(--glass-shadow-base);
+      }
+
+      .investment-tier-modal-card h4,
+      .hot-deal-modal-card h4 {
+        color: var(--monitre-white);
+        margin-bottom: 18px;
+        font-size: 1.3rem; /* Larger titles */
+        text-shadow: 0 0 8px rgba(82, 183, 136, 0.6);
+      }
+      .investment-tier-modal-card ul,
+      .hot-deal-modal-card ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 25px; /* More spacing */
+        text-align: left;
+        font-size: 0.98em; /* Slightly larger list text */
+        color: var(--page-text-color);
+      }
+
+      .deal-highlight {
+        font-weight: bold;
+        color: var(--accent-color-primary);
+        font-size: 1.15em; /* Slightly larger highlight */
+        margin-bottom: 12px;
+        text-shadow: 0 0 5px rgba(82, 183, 136, 0.4);
+      }
+
+      /* --- Success Modal --- */
+      .success-modal-content {
+        border-color: var(--success-color);
+      }
+      .success-modal-header {
+        background-color: rgba(var(--success-color), 0.5);
+      }
+      .success-modal-body {
+        text-align: center;
+        color: var(--page-text-color);
+      }
+      .success-icon i {
+        font-size: 3.5em; /* Larger icon */
+        color: var(--success-color);
+        animation: scaleIn 0.5s ease-out;
+        filter: drop-shadow(0 0 10px rgba(82, 183, 136, 0.8)); /* Glow effect */
+      }
+      .success-message {
+        font-size: 1.3em; /* Larger message */
+        font-weight: bold;
+        color: var(--page-text-color);
+      }
+      .btn-success-ok {
+        background-color: var(--success-color);
+        border: none;
+        color: var(--monitre-white);
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      .btn-success-ok:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      /* --- Fixed Footer --- */
+      .otheropt {
+        position: sticky; /* Changed to sticky to avoid fixed overlapping content on small screens */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(
+          var(--monitre-blue-dark),
+          0.7
+        ); /* Slightly more transparent */
+        padding: 12px 0; /* More padding */
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -5px 18px var(--glass-shadow-base); /* Stronger shadow */
+        backdrop-filter: blur(8px); /* Stronger blur */
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 100; /* Ensure it's above other content */
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .otheropt button {
+        background: transparent;
+        border: none;
+        color: var(--monitre-white);
+        font-size: 1.7em; /* Larger icons */
+        cursor: pointer;
+        padding: 12px; /* More padding */
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .otheropt button:hover {
+        color: var(--accent-color-primary);
+        transform: scale(1.15); /* More pronounced scale */
+        filter: drop-shadow(0 0 5px rgba(82, 183, 136, 0.6));
+      }
+
+      /* --- Animations --- */
+      @keyframes iconPulse {
+        0% {
+          transform: scale(0.9);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.9);
+          opacity: 0.7;
+        }
+      }
+
+      .icon-pulse {
+        animation: iconPulse 1.8s infinite ease-in-out; /* Slower, more subtle pulse */
+        font-size: 3.2em; /* Slightly larger */
+        color: var(--accent-color-primary);
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* --- Responsive adjustments --- */
+      @media (max-width: 1024px) {
+        html {
+          font-size: 15px;
+        }
+        .page-header {
+          padding: 1.25rem 1.5rem;
+        }
+        .outerdiv {
+          width: 95%;
+          margin: 1.5rem auto;
+          padding: 20px;
+        }
+        section {
+          padding: 2rem;
+        }
+        .user-details div button {
+          padding: 10px 20px;
+          font-size: 0.95em;
+        }
+        h3 {
+          font-size: 1.6em;
+          margin-bottom: 25px;
+        }
+        .refer-earn-button-section .refer-button {
+            padding: 12px 25px;
+            font-size: 1em;
+        }
+      }
+
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px;
+        }
+        .page-header {
+          flex-direction: column;
+          padding: 1rem 1rem;
+          text-align: center;
+        }
+        body {
+          justify-content: flex-start;
+          padding-top: 0;
+        }
+        .outerdiv {
+          flex-direction: column;
+          margin: 1.5rem auto;
+          border-radius: 1.25rem;
+          max-width: 98%;
+          flex-grow: 1;
+          padding: 20px;
+        }
+        section {
+          padding: 1.5rem;
+        }
+        .user-details img {
+          width: 80px;
+          height: 80px;
+        }
+        .user-details h5 {
+          font-size: 1.2em;
+        }
+        .total-amt {
+          font-size: 1.2em;
+        }
+        .otheropt button {
+          font-size: 1.5em;
+        }
+        .modal-body {
+          padding: 25px;
+        }
+        .modal-title {
+          font-size: 1.4em;
+        }
+        .modal-announcement {
+          font-size: 1.05em;
+        }
+        .highlight-date {
+          font-size: 1.2em;
+        }
+        .investment-card h4 {
+            font-size: 1.25rem;
+        }
+        .refer-earn-button-section .refer-button {
+            padding: 10px 20px;
+            font-size: 0.9em;
+        }
+      }
+
+      @media (max-width: 480px) {
+        html {
+          font-size: 13px;
+        }
+        .page-header {
+          padding: 0.8rem 0.8rem;
+        }
+        section {
+          padding: 1.2rem;
+        }
+        .user-details img {
+          width: 70px;
+          height: 70px;
+        }
+        .user-details h5 {
+          font-size: 1.1em;
+        }
+        .total-amt {
+          font-size: 1.1em;
+        }
+        .otheropt button {
+          font-size: 1.3em;
+        }
+        .modal-title {
+          font-size: 1.2em;
+        }
+        .modal-announcement {
+          font-size: 0.95em;
+        }
+        .highlight-date {
+          font-size: 1.1em;
+        }
+        .investment-card h4 {
+            font-size: 1.15rem;
+        }
+        /* Specific adjustment for user-details buttons on very small screens */
+        .user-details div button,
+        .user-details div a.button {
+          flex-grow: 1; /* Allow buttons to take full width available if needed */
+          max-width: 150px; /* Max width to prevent them from becoming too wide */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-header">
+      <span class="logo-text">monitre <i class="fa-solid fa-feather"></i></span>
+    </header>
+
+    <main class="outerdiv">
+      <section class="user-details">
+        <img
+          src="https://img.freepik.com/premium-vector/character-avatar-isolated_729149-194801.jpg"
+          alt="User Avatar"
+        />
+        <h5 class="mb-1" id="userName">User-Name</h5>
+        <p class="mb-1" id="userEmail">user@example.com</p>
+        <p class="mb-1" id="userNumber">N/A</p>
+        <p class="total-amt">My Balance: ₹<span id="avail-bal">0.00</span></p>
+        <div>
+          <button class="add-mon" id="deposit">Add Money</button>
+          <button class="withdraw-mon" id="withdraw">Withdraw</button>
+          <a href="Myinvestmenthistory.html" class="button">History</a>
+        </div>
+      </section>
+
+      <section class="invest-section">
+        <h3>📈 Invest with Us</h3>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6 col-lg-4">
+            <div class="investment-card fixed-deposit-card">
+              <img
+                src="https://plus.unsplash.com/premium_photo-1675055730303-a513dca9e344?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Fixed Deposit"
+                class="investment-image"
+              />
+              <h4>Fixed Deposit</h4>
+              <p>A secure way to grow your savings with guaranteed returns.</p>
+              <ul>
+                <li>Earn <span class="highlight">2.0% Daily Interest</span></li>
+                <li>Min. Investment: ₹1000</li>
+                <li>Lock-in Period: 28 Days</li>
+              </ul>
+              <button
+                class="invest-button"
+                data-bs-toggle="modal"
+                data-bs-target="#investmentModal"
+                data-plan="fixedDeposit"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="investment-card tiered-plan-card">
+              <img
+                src="https://plus.unsplash.com/premium_photo-1682310178386-1d20be620733?q=80&w=1212&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Tiered Plans"
+                class="investment-image"
+              />
+              <h4>Growth Plans</h4>
+              <p>Choose a plan that fits your ambition and financial goals.</p>
+              <p class="small-info">Click "Explore Plans" to see options.</p>
+              <button
+                class="invest-button"
+                data-bs-toggle="modal"
+                data-bs-target="#tieredPlansModal"
+                data-plan="tiered"
+              >
+                Explore Plans
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="investment-card hot-deal-card">
+              <img
+                src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Hot Deals"
+                class="investment-image"
+              />
+              <h4>Exclusive Hot Deals</h4>
+              <p>Unlock limited-time opportunities with high returns.</p>
+              <p class="small-info">New deals added regularly!</p>
+              <button
+                class="invest-button"
+                data-bs-toggle="modal"
+                data-bs-target="#hotDealsModal"
+                data-plan="hotDeals"
+              >
+                View Deals
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="refer-earn-button-section">
+        <h3>🤝 Refer and Earn</h3>
+        <p class="mb-4">Invite your friends to monitre and earn exciting rewards!</p>
+        <a href="referandearn.html" class="refer-button">Go to Refer & Earn Page</a>
+      </section>
+
+      <section class="contact-us">
+        <p>
+          For any query contact us on:
+          <a href="mailto:monitre25@gmail.com"
+            >monitre25@gmail.com</a
+          >
+        </p>
+      </section>
+    </main>
+
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content professional-modal-content">
+          <div class="modal-header professional-modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Exciting New Features Coming Soon!
+            </h1>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body professional-modal-body text-center">
+            <div class="icon-pulse">
+              <i class="fa-solid fa-hourglass-start"></i>
+            </div>
+            <p class="lead mt-3 mb-4">
+              We're thrilled to announce a major update is on its way!
+            </p>
+            <p class="modal-announcement">
+              This exclusive option will be available from our next update,
+              rolling out on:
+              <br />
+              <span class="highlight-date">10<sup>th</sup> August, 2025</span>
+            </p>
+            <p class="small-text mt-4">
+              Get ready for enhanced features and even more ways to engage with
+              monitre!
+            </p>
+          </div>
+          <div
+            class="modal-footer professional-modal-footer justify-content-center"
+          >
+            <button
+              type="button"
+              class="btn btn-primary professional-btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Got It!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="investmentModal"
+      tabindex="-1"
+      aria-labelledby="investmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content professional-modal-content">
+          <div class="modal-header professional-modal-header">
+            <h5 class="modal-title" id="investmentModalLabel">Invest Now</h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body professional-modal-body text-center">
+            <p>Enter the amount you wish to invest:</p>
+            <input
+              type="number"
+              id="investAmount"
+              class="form-control mb-3"
+              placeholder="e.g., 1000"
+              min="1"
+            />
+            <p class="small-text" id="investmentModalInfo">
+              Details about your chosen plan will appear here.
+            </p>
+          </div>
+          <div
+            class="modal-footer professional-modal-footer justify-content-center"
+          >
+            <button
+              type="button"
+              class="btn btn-primary professional-btn-primary"
+              id="confirmInvestment"
+            >
+              Confirm Investment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="tieredPlansModal"
+      tabindex="-1"
+      aria-labelledby="tieredPlansModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content professional-modal-content">
+          <div class="modal-header professional-modal-header">
+            <h5 class="modal-title" id="tieredPlansModalLabel">
+              Explore Growth Plans
+            </h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body professional-modal-body text-center">
+            <div class="row g-3 justify-content-center">
+              <div class="col-md-6 col-lg-4">
+                <div class="investment-tier-modal-card bronze-tier">
+                  <h4>Bronze Plan</h4>
+                  <ul>
+                    <li>Min. Investment: ₹500</li>
+                    <li>Daily Return: 1.2%</li>
+                    <li>Duration: 21 Days</li>
+                  </ul>
+                  <button
+                    class="btn btn-primary professional-btn-primary select-tier-button"
+                    data-min="500"
+                    data-return="1.2"
+                    data-duration="21"
+                    data-name="Bronze Plan"
+                  >
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="investment-tier-modal-card silver-tier">
+                  <h4>Silver Plan</h4>
+                  <ul>
+                    <li>Min. Investment: ₹2000</li>
+                    <li>Daily Return: 1.8%</li>
+                    <li>Duration: 21 Days</li>
+                  </ul>
+                  <button
+                    class="btn btn-primary professional-btn-primary select-tier-button"
+                    data-min="2000"
+                    data-return="1.8"
+                    data-duration="21"
+                    data-name="Silver Plan"
+                  >
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="investment-tier-modal-card gold-tier">
+                  <h4>Gold Plan</h4>
+                  <ul>
+                    <li>Min. Investment: ₹5000</li>
+                    <li>Daily Return: 2.5%</li>
+                    <li>Duration: 28 Days</li>
+                  </ul>
+                  <button
+                    class="btn btn-primary professional-btn-primary select-tier-button"
+                    data-min="5000"
+                    data-return="2.5"
+                    data-duration="28"
+                    data-name="Gold Plan"
+                  >
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div
+      class="modal fade"
+      id="hotDealsModal"
+      tabindex="-1"
+      aria-labelledby="hotDealsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content professional-modal-content">
+          <div class="modal-header professional-modal-header">
+            <h5 class="modal-title" id="hotDealsModalLabel">
+              Exclusive Hot Deals
+            </h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body professional-modal-body text-center">
+            <div
+              id="hotDealsContainerModal"
+              class="row g-3 justify-content-center"
+            >
+              <div class="col-12 text-center">
+                <p class="small-text">
+                  No hot deals available right now. Check back later!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div
+      class="modal fade"
+      id="investmentSuccessModal"
+      tabindex="-1"
+      aria-labelledby="investmentSuccessModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content success-modal-content">
+          <div class="modal-header success-modal-header">
+            <h5 class="modal-title" id="investmentSuccessModalLabel">
+              Investment Confirmed!
+            </h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body success-modal-body">
+            <div class="success-icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <p class="success-message mt-3" id="successMessageText">
+              Your investment has been successfully placed.
+            </p>
+          </div>
+          <div class="modal-footer success-modal-footer">
+            <button
+              type="button"
+              class="btn btn-success-ok"
+              data-bs-dismiss="modal"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="logoutConfirmModal"
+      tabindex="-1"
+      aria-labelledby="logoutConfirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content professional-modal-content">
+          <div class="modal-header professional-modal-header">
+            <h5 class="modal-title" id="logoutConfirmModalLabel">Confirm Logout</h5>
+            <button
+              type="button"
+              class="btn-close professional-btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body professional-modal-body text-center">
+            <p>Are you sure you want to log out?</p>
+            <div class="d-flex justify-content-center gap-3 mt-4">
+              <button
+                type="button"
+                class="btn btn-secondary professional-btn-primary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger professional-btn-primary"
+                id="confirmLogoutBtn"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="otheropt">
+      <button data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <i class="fa-solid fa-user"></i>
+      </button>
+      <button id="logoutButton">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </button>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_BASE_URL = "https://richmindsbackend.onrender.com"; // Ensure this matches your backend port
+
+      const userNameElement = document.getElementById("userName");
+      const userEmailElement = document.getElementById("userEmail");
+      const userNumberElement = document.getElementById("userNumber");
+      const logoutButton = document.getElementById("logoutButton");
+      const availbal = document.getElementById("avail-bal");
+      const withdraw = document.getElementById("withdraw");
+      const deposit = document.getElementById("deposit");
+      const confirmLogoutBtn = document.getElementById("confirmLogoutBtn"); // New: Confirmation button for logout
+      const logoutConfirmModal = new bootstrap.Modal(document.getElementById("logoutConfirmModal")); // New: Logout confirmation modal instance
+
+
+      // Function to display user info from sessionStorage
+      function displayUserInfo() {
+        const userString = sessionStorage.getItem("user");
+        if (userString) {
+          const user = JSON.parse(userString);
+          console.log("User data from session storage:", user);
+
+          userNameElement.textContent = user.username || "User-Name";
+          userEmailElement.textContent = user.email || "user@example.com";
+          userNumberElement.textContent = user.number
+            ? `+91 ${user.number}`
+            : "N/A";
+          availbal.textContent = parseFloat(user.balance).toFixed(2); // Ensure balance is formatted
+        } else {
+          console.log(
+            "No user data found in session storage. Redirecting to home.html."
+          );
+          window.location.href = "login.html"; // Redirect to login page
+        }
+      }
+
+      // Initial display of user info when the page loads
+      displayUserInfo();
+
+      // Logout functionality - Now shows confirmation modal first
+      logoutButton.addEventListener("click", () => {
+        logoutConfirmModal.show(); // Show the confirmation modal
+      });
+
+      // New: Event listener for the "Confirm Logout" button inside the modal
+      confirmLogoutBtn.addEventListener("click", () => {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
+        console.log("You have been logged out.");
+        logoutConfirmModal.hide(); // Hide the confirmation modal after logging out
+        window.location.href = "login.html"; // Redirect to login page
+      });
+
+      // Add/Withdraw money redirections (kept as they are part of user balance)
+      withdraw.addEventListener("click", () => {
+        window.location.href = "withdraw.html";
+      });
+      deposit.addEventListener("click", () => {
+        window.location.href = "deposit.html";
+      });
+
+      /* --- NEW INVEST SECTION JAVASCRIPT --- */
+
+      // Investment plan data (client-side reference)
+      const investmentPlans = {
+        fixedDeposit: {
+          min: 1000,
+          dailyReturn: 2.0, // Increased interest rate
+          duration: 28, // Changed to 28 days
+          name: "Fixed Deposit",
+        },
+        selectedTier: null, // Stores selected tiered plan details
+        selectedHotDeal: null, // Stores selected hot deal details
+        // removed selectedDailyIncome
+      };
+
+      // Hot Deals Data (client-side reference)
+      const hotDealsData = [
+        {
+          id: "deal_700_60day_25",
+          name: "Hot Deal ₹700",
+          returnPercentageDisplay: "₹25/day", // For UI display
+          backendReturnText: "9%", // To be sent to backend as planDetails.returnText
+          duration: "60 Days", // For UI display and to be sent to backend as planDetails.duration
+          minInvestment: 700,
+          description: "Get a fixed daily return for 60 days.",
+        },
+        {
+          id: "deal_1450_60day_50",
+          name: "Hot Deal ₹1450",
+          returnPercentageDisplay: "₹50/day",
+          backendReturnText: "12%",
+          duration: "60 Days",
+          minInvestment: 1450,
+          description: "Earn more with this 60-day special offer.",
+        },
+        {
+          id: "deal_3000_60day_120",
+          name: "Hot Deal ₹3000",
+          returnPercentageDisplay: "₹120/day",
+          backendReturnText: "15%",
+          duration: "60 Days",
+          minInvestment: 3000,
+          description: "Significant daily returns over two months.",
+        },
+        {
+          id: "deal_6000_60day_250",
+          name: "Hot Deal ₹6000",
+          returnPercentageDisplay: "₹250/day",
+          backendReturnText: "8%",
+          duration: "60 Days",
+          minInvestment: 6000,
+          description: "Maximize your earnings with our top 60-day deal.",
+        },
+      ];
+
+      // Get references to elements in the primary investment modal
+      const investmentModalLabel = document.getElementById(
+        "investmentModalLabel"
+      );
+      const investAmountInput = document.getElementById("investAmount");
+      const investmentModalInfo = document.getElementById(
+        "investmentModalInfo"
+      );
+      const confirmInvestmentButton =
+        document.getElementById("confirmInvestment");
+      const investmentSuccessModal = new bootstrap.Modal(
+        document.getElementById("investmentSuccessModal")
+      );
+      const successMessageText = document.getElementById("successMessageText");
+
+      // Handle clicks on the main investment option buttons
+      document.querySelectorAll(".invest-button").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const planType = event.target.dataset.plan;
+
+          // Reset specific input/info for the primary investment modal
+          investAmountInput.value = "";
+          investAmountInput.dataset.selectedInvestmentType = planType; // Store type for confirm button
+
+          // Clear all specific plan selections
+          investmentPlans.selectedTier = null;
+          investmentPlans.selectedHotDeal = null;
+
+
+          if (planType === "fixedDeposit") {
+            investmentModalLabel.textContent = `Invest in Fixed Deposit`;
+            investAmountInput.min = investmentPlans.fixedDeposit.min;
+            investAmountInput.placeholder = `e.g., ${investmentPlans.fixedDeposit.min}`;
+            investmentModalInfo.innerHTML = `Your investment will be locked for ${investmentPlans.fixedDeposit.duration} days and earn ${investmentPlans.fixedDeposit.dailyReturn}% daily interest. Minimum investment: ₹${investmentPlans.fixedDeposit.min}.`;
+          } else if (planType === "tiered") {
+            // This button opens tieredPlansModal directly
+            // No direct update to investmentModal from here, it's done when a tier is selected.
+          } else if (planType === "hotDeals") {
+            // This button opens hotDealsModal directly
+            renderHotDealsInModal(); // Render deals when modal is opened
+          }
+        });
+      });
+
+      // Logic for Tiered Plans Modal - When a tier is selected
+      document.querySelectorAll(".select-tier-button").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const min = parseFloat(event.target.dataset.min);
+          const dailyReturn = parseFloat(event.target.dataset.return);
+          const duration = parseFloat(event.target.dataset.duration);
+          const name = event.target.dataset.name;
+
+          // Store selected tier details
+          investmentPlans.selectedTier = { min, dailyReturn, duration, name };
+          investmentPlans.selectedHotDeal = null; // Clear hot deal selection
+
+          // Update the main investment modal with tier details
+          investmentModalLabel.textContent = `Invest in ${name}`;
+          investAmountInput.min = min;
+          investAmountInput.placeholder = `e.g., ${min}`;
+          investmentModalInfo.innerHTML = `Your investment will be locked for ${duration} days and earn ${dailyReturn}% daily interest. Minimum investment: ₹${min}.`;
+
+          // Set the selected investment type to 'tiered' for the confirm button
+          investAmountInput.dataset.selectedInvestmentType = "tiered";
+
+          // Close the tiered modal and open the primary investment modal
+          const tieredModalInstance = bootstrap.Modal.getInstance(
+            document.getElementById("tieredPlansModal")
+          );
+          tieredModalInstance.hide();
+          const genericInvestmentModal = new bootstrap.Modal(
+            document.getElementById("investmentModal")
+          );
+          genericInvestmentModal.show();
+        });
+      });
+
+      // Logic for Hot Deals Modal - Render deals
+      const hotDealsContainerModal = document.getElementById(
+        "hotDealsContainerModal"
+      );
+
+      function renderHotDealsInModal() {
+        if (hotDealsData.length === 0) {
+          hotDealsContainerModal.innerHTML = `
+          <div class="col-12 text-center">
+            <p class="small-text">No hot deals available right now. Check back later!</p>
+          </div>
+          `;
+          return;
+        }
+
+        hotDealsContainerModal.innerHTML = ""; // Clear previous content
+        hotDealsData.forEach((deal) => {
+          const dealCard = `
+          <div class="col-md-6 col-lg-4">
+            <div class="hot-deal-modal-card">
+              <h4>${deal.name}</h4>
+              <p class="deal-highlight">${deal.returnPercentageDisplay} Return</p>
+              <ul>
+                <li>Min. Investment: ₹${deal.minInvestment}</li>
+                <li>Duration: ${deal.duration}</li>
+                <li>${deal.description}</li>
+              </ul>
+              <button class="btn btn-primary professional-btn-primary select-hot-deal-button"
+                      data-min="${deal.minInvestment}"
+                      data-name="${deal.name}"
+                      data-return-text-display="${deal.returnPercentageDisplay}"
+                      data-duration-text-display="${deal.duration}"
+                      data-backend-return-text="${deal.backendReturnText}"
+                      data-duration="${deal.duration}">Invest Now</button>
+            </div>
+          </div>
+          `;
+          hotDealsContainerModal.insertAdjacentHTML("beforeend", dealCard);
+        });
+
+        // Attach event listeners to newly created "Invest Now" buttons in the hot deals modal
+        document
+          .querySelectorAll(".select-hot-deal-button")
+          .forEach((button) => {
+            button.addEventListener("click", (event) => {
+              const min = parseFloat(event.target.dataset.min);
+              const name = event.target.dataset.name;
+              const returnTextDisplay = event.target.dataset.returnTextDisplay;
+              const durationTextDisplay = event.target.dataset.durationTextDisplay;
+              const backendReturnText = event.target.dataset.backendReturnText; // Value for backend.returnText
+              const durationBackend = event.target.dataset.duration; // Value for backend.duration
+
+
+              // Store selected hot deal details for both display and backend
+              investmentPlans.selectedHotDeal = {
+                min,
+                name,
+                returnText: backendReturnText, // This will be planDetails.returnText for backend
+                duration: durationBackend, // This will be planDetails.duration for backend
+                returnTextDisplay: returnTextDisplay, // For UI display purposes
+                durationTextDisplay: durationTextDisplay, // For UI display purposes
+              };
+              investmentPlans.selectedTier = null; // Clear tiered plan selection
+
+
+              // Update the main investment modal with hot deal details (using display text)
+              investmentModalLabel.textContent = `Invest in ${name}`;
+              investAmountInput.min = min;
+              investAmountInput.placeholder = `e.g., ${min}`;
+              investmentModalInfo.innerHTML = `Your investment will be locked for ${durationTextDisplay} and earn ${returnTextDisplay} return. Minimum investment: ₹${min}.`;
+
+              // Set the selected investment type to 'hotDeal' (singular for backend) for the confirm button
+              investAmountInput.dataset.selectedInvestmentType = "hotDeal";
+
+              // Close the hot deals modal and open the primary investment modal
+              const hotDealsModalInstance = bootstrap.Modal.getInstance(
+                document.getElementById("hotDealsModal")
+              );
+              hotDealsModalInstance.hide();
+              const genericInvestmentModal = new bootstrap.Modal(
+                document.getElementById("investmentModal")
+              );
+              genericInvestmentModal.show();
+            });
+          });
+      }
+
+
+      // Universal Confirm Investment Button Logic
+      confirmInvestmentButton.addEventListener("click", async () => {
+        const investmentAmount = parseFloat(investAmountInput.value);
+        const selectedInvestmentType =
+          investAmountInput.dataset.selectedInvestmentType;
+
+        let minAmount = 0;
+        let planDetailsToSend = {}; // Object to send to backend
+        let investmentName = "";
+
+        // Determine min amount and plan details based on selected type
+        if (selectedInvestmentType === "fixedDeposit") {
+          minAmount = investmentPlans.fixedDeposit.min;
+          planDetailsToSend = { ...investmentPlans.fixedDeposit };
+          investmentName = investmentPlans.fixedDeposit.name;
+        } else if (
+          selectedInvestmentType === "tiered" &&
+          investmentPlans.selectedTier
+        ) {
+          minAmount = investmentPlans.selectedTier.min;
+          planDetailsToSend = { ...investmentPlans.selectedTier };
+          investmentName = investmentPlans.selectedTier.name;
+        } else if (
+          selectedInvestmentType === "hotDeal" &&
+          investmentPlans.selectedHotDeal
+        ) {
+          minAmount = investmentPlans.selectedHotDeal.min;
+          planDetailsToSend = {
+            name: investmentPlans.selectedHotDeal.name,
+            min: investmentPlans.selectedHotDeal.min,
+            returnText: investmentPlans.selectedHotDeal.returnText, // Use the string prepared for backend parsing
+            duration: investmentPlans.selectedHotDeal.duration, // Use the duration string prepared for backend
+          };
+          investmentName = investmentPlans.selectedHotDeal.name;
+        } else {
+          console.log("Please select an investment plan first.");
+          return;
+        }
+
+        // Validate amount
+        if (isNaN(investmentAmount) || investmentAmount < minAmount) {
+          console.log(
+            `Please enter a valid investment amount (minimum ₹${minAmount}).`
+          );
+          return;
+        }
+
+        const userString = sessionStorage.getItem("user");
+        const token = sessionStorage.getItem("token");
+
+        if (!userString || !token) {
+          console.log("User not logged in. Redirecting to home.html.");
+          window.location.href = "login.html";
+          return;
+        }
+
+        let user = JSON.parse(userString);
+        if (user.balance < investmentAmount) {
+          console.log("Insufficient balance to make this investment.");
+          return;
+        }
+
+        // Prepare data for backend
+        const requestBody = {
+          userId: user._id, // Assuming _id is stored in user object from backend
+          planType: selectedInvestmentType,
+          planDetails: planDetailsToSend,
+          amount: investmentAmount,
+        };
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/invest`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            console.log(data.message);
+            // Update user balance in session storage and UI
+            user.balance = data.newBalance;
+            sessionStorage.setItem("user", JSON.stringify(user));
+            availbal.textContent = parseFloat(user.balance).toFixed(2);
+
+            // Close the main investment modal
+            const genericInvestmentModal = bootstrap.Modal.getInstance(
+              document.getElementById("investmentModal")
+            );
+            genericInvestmentModal.hide();
+
+            // Show success message
+            successMessageText.textContent = data.message;
+            investmentSuccessModal.show();
+          } else {
+            console.error("Investment failed:", data.message || "Unknown error");
+            // You might want to show an error modal here as well
+            successMessageText.textContent =
+              data.message || "Failed to make investment. Please try again.";
+            investmentSuccessModal.show(); // Re-use the modal for errors for now, or create a separate error modal
+          }
+        } catch (error) {
+          console.error("Error making investment request:", error);
+          successMessageText.textContent =
+            "An error occurred during investment. Please try again later.";
+          investmentSuccessModal.show();
+        }
+      });
+      
+    </script>
+  </body>
+</html>
